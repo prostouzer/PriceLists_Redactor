@@ -27,6 +27,9 @@ namespace PriceLists_Redactor.Models
                 return -1;
             }
         }
+        
+        public int PriceListId { get; set; }
+        public virtual PriceList PriceList { get; set; }
     }
 
     public enum DataType

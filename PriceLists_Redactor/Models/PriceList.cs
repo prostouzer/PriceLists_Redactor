@@ -9,6 +9,6 @@ namespace PriceLists_Redactor.Models
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public List<Column> Columns { get; set; } = new List<Column>();
+        //public List<Column> Columns { get; set; } = new List<Column>();
     }
 }

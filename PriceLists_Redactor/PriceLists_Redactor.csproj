@@ -175,6 +175,10 @@
     <Compile Include="Migrations\202101281043166_initial.Designer.cs">
       <DependentUpon>202101281043166_initial.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202101281121597_column foreignKey.cs" />
+    <Compile Include="Migrations\202101281121597_column foreignKey.Designer.cs">
+      <DependentUpon>202101281121597_column foreignKey.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Cell.cs" />
     <Compile Include="Models\Column.cs" />
@@ -280,6 +284,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202101281043166_initial.resx">
       <DependentUpon>202101281043166_initial.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202101281121597_column foreignKey.resx">
+      <DependentUpon>202101281121597_column foreignKey.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
