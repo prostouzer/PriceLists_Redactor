@@ -25,7 +25,7 @@ namespace PriceLists_Redactor.Migrations
             columnsList1.Add(column1);
             columnsList1.Add(column2);
 
-            context.PriceLists.Add(new PriceList()
+            context.PriceLists.AddOrUpdate(new PriceList()
             {
                 Columns = columnsList1,
                 Name = "Прайс-лист мебели"
@@ -38,11 +38,40 @@ namespace PriceLists_Redactor.Migrations
             columnsList1.Add(column3);
             columnsList1.Add(column4);
 
-            context.PriceLists.Add(new PriceList()
+            context.PriceLists.AddOrUpdate(new PriceList()
             {
                 Columns = columnsList2,
                 Name = "Прайс-лист одежды"
             });
+
+
+            var cell1 = new Cell() { Data = "Просто стол!" };
+            var cell2 = new Cell() { Data = "1" };
+
+            var cellsList1 = new List<Cell>();
+            cellsList1.Add(cell1);
+            cellsList1.Add(cell2);
+
+            var item1 = new Item()
+            {
+                Title = "Обеденный стол",
+                PriceListId = 1,
+                Cells = cellsList1
+            };
+
+            var cell3 = new Cell() { Data = "Хороший, деревянный стул. ТЕСТ МНОГОСТРОЧНОЙ КОЛОНКИ. ТЕСТ МНОГОСТРОЧНОЙ КОЛОНКИ" };
+            var cell4 = new Cell() { Data = "10" };
+
+            var cellsList2 = new List<Cell>();
+            cellsList2.Add(cell3);
+            cellsList2.Add(cell4);
+
+            var item2 = new Item()
+            {
+                Title = "Стул",
+                PriceListId = 1,
+                Cells = cellsList2
+            };
         }
     }
 }
