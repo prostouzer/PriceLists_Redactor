@@ -46,8 +46,10 @@ namespace PriceLists_Redactor.Migrations
             cellsList2.Add(cell3);
             cellsList2.Add(cell4);
 
-            context.Items.AddOrUpdate(new Item() { Title = "Обеденный стол", Cells = cellsList1, PriceListId = 1 });
-            context.Items.AddOrUpdate(new Item() { Title = "Стул", Cells = cellsList2, PriceListId = 2 });
+            var item1 = new Item() { Title = "Обеденный стол", Cells = cellsList1, PriceListId = 1 };
+            var item2 = new Item() { Title = "Стул", Cells = cellsList2, PriceListId = 2 };
+            context.Items.AddOrUpdate(item1);
+            context.Items.AddOrUpdate(item2);
         }
     }
 }
