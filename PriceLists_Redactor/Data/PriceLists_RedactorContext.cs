@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.Entity;
-using System.Linq;
-using System.Web;
+﻿using System.Data.Entity;
+using PriceLists_Redactor.Models;
 
 namespace PriceLists_Redactor.Data
 {
@@ -14,13 +11,13 @@ namespace PriceLists_Redactor.Data
         // automatically whenever you change your model schema, please use data migrations.
         // For more information refer to the documentation:
         // http://msdn.microsoft.com/en-us/data/jj591621.aspx
-    
         public PriceLists_RedactorContext() : base("name=PriceLists_RedactorContext")
         {
         }
 
-        public System.Data.Entity.DbSet<PriceLists_Redactor.Models.PriceList> PriceLists { get; set; }
-
-        public System.Data.Entity.DbSet<PriceLists_Redactor.Models.Item> Items { get; set; }
+        public DbSet<PriceList> PriceLists { get; set; }
+        public DbSet<Item> Items { get; set; }
+        public DbSet<Column> Columns { get; set; }
+        public DbSet<Cell> Cells { get; set; }
     }
 }
