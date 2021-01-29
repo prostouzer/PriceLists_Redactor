@@ -2,7 +2,7 @@
 @model PriceLists_Redactor.Models.ViewModels.PriceListViewModel
 
 @{
-    ViewBag.Title = "Details";
+    ViewBag.Title = "Подробнее";
 }
 
 <h2>Details</h2>
@@ -11,14 +11,11 @@
     <h4>PriceList</h4>
     <hr />
     <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.PriceList.Name)
-        </dt>
-
+        <dt>Прайс-лист:</dt>
         <dd>
             @Html.DisplayFor(model => model.PriceList.Name)
-            @Html.ActionLink("Edit", "Edit", new { id = Model.PriceList.Id }) |
-            @Html.ActionLink("Back to List", "Index")
+            @Html.ActionLink("Редактировать", "Edit", new {id = Model.PriceList.Id}) |
+            @Html.ActionLink("На главную", "Index")
         </dd>
     </dl>
 </div>
@@ -38,7 +35,10 @@
             <tr>
                 <td>@item.Id</td>
                 <td>@item.Title</td>
-                @*TODO FOREACH CELL...*@
+                @foreach (Cell cell in Model.Cells)
+                {
+                    <td>@cell.Data</td>
+                }
             </tr>
         }
     </table>

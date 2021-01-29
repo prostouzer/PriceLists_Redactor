@@ -33,7 +33,9 @@ namespace PriceLists_Redactor.Controllers
             PriceList priceList = await db.PriceLists.FindAsync(id);
             IEnumerable<Column> columns = db.Columns.Where(c => c.PriceListId == id);
             IEnumerable<Item> items = db.Items.Where(i => i.Id == id);
-            PriceListViewModel priceListWithItems = new PriceListViewModel(priceList, columns, items);
+            IEnumerable<Cell> cells = db.Cells.Where(c => c.Item.PriceListId == id);
+            var a = cells.Count();
+            PriceListViewModel priceListWithItems = new PriceListViewModel(priceList, columns, items, cells);
             if (priceList == null)
             {
                 return HttpNotFound();
