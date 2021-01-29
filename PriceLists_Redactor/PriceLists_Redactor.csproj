@@ -184,6 +184,7 @@
     <Compile Include="Models\Column.cs" />
     <Compile Include="Models\Item.cs" />
     <Compile Include="Models\PriceList.cs" />
+    <Compile Include="Models\ViewModels\PriceListViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -242,7 +243,6 @@
     <Content Include="Views\PriceLists\Index.cshtml" />
     <Content Include="Views\Items\Create.cshtml" />
     <Content Include="Views\Items\Delete.cshtml" />
-    <Content Include="Views\Items\Details.cshtml" />
     <Content Include="Views\Items\Edit.cshtml" />
     <Content Include="Views\Items\Index.cshtml" />
   </ItemGroup>

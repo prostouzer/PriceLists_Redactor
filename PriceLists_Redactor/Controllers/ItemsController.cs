@@ -23,21 +23,6 @@ namespace PriceLists_Redactor.Controllers
             return View(await items.ToListAsync());
         }
 
-        // GET: Items/Details/5
-        public async Task<ActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Item item = await db.Items.FindAsync(id);
-            if (item == null)
-            {
-                return HttpNotFound();
-            }
-            return View(item);
-        }
-
         // GET: Items/Create
         public ActionResult Create()
         {
@@ -46,8 +31,6 @@ namespace PriceLists_Redactor.Controllers
         }
 
         // POST: Items/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Create([Bind(Include = "Id,Title,PriceListId")] Item item)
@@ -80,8 +63,6 @@ namespace PriceLists_Redactor.Controllers
         }
 
         // POST: Items/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Edit([Bind(Include = "Id,Title,PriceListId")] Item item)

@@ -43,9 +43,7 @@ namespace PriceLists_Redactor.Controllers
             return View();
         }
 
-        // POST: PriceLists/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+        // POST: PriceLists/Create=
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Create([Bind(Include = "Id,Name")] PriceList priceList)
