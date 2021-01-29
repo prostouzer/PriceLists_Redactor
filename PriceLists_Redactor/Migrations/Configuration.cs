@@ -34,22 +34,17 @@ namespace PriceLists_Redactor.Migrations
             context.Columns.AddOrUpdate(column4);
             context.SaveChanges();
 
-            var cell1 = new Cell() { Data = "Просто стол!", ColumnId = 1 };
-            var cell2 = new Cell() { Data = "1", ColumnId = 2 };
-            var cellsList1 = new List<Cell>();
-            cellsList1.Add(cell1);
-            cellsList1.Add(cell2);
-
-            var cell3 = new Cell() { Data = "Хороший, деревянный стул. ТЕСТ МНОГОСТРОЧНОЙ КОЛОНКИ. ТЕСТ МНОГОСТРОЧНОЙ КОЛОНКИ", ColumnId = 3 };
-            var cell4 = new Cell() { Data = "10", ColumnId = 4 };
-            var cellsList2 = new List<Cell>();
-            cellsList2.Add(cell3);
-            cellsList2.Add(cell4);
-
-            var item1 = new Item() { Title = "Обеденный стол", Cells = cellsList1, PriceListId = 1 };
-            var item2 = new Item() { Title = "Стул", Cells = cellsList2, PriceListId = 2 };
+            var item1 = new Item() { Title = "Обеденный стол", PriceListId = 1 };
+            var item2 = new Item() { Title = "Стул", PriceListId = 2 };
             context.Items.AddOrUpdate(item1);
             context.Items.AddOrUpdate(item2);
+
+            var cell1 = new Cell() { Data = "Просто стол!", ColumnId = 1, ItemId = 1 };
+            var cell2 = new Cell() { Data = "1", ColumnId = 2, ItemId = 1 };
+            var cell3 = new Cell() { Data = "Хороший, деревянный стул. ТЕСТ МНОГОСТРОЧНОЙ КОЛОНКИ. ТЕСТ МНОГОСТРОЧНОЙ КОЛОНКИ", ColumnId = 3, ItemId = 2 };
+            var cell4 = new Cell() { Data = "10", ColumnId = 4, ItemId = 2 };
+            context.Cells.AddOrUpdate(cell1);
+            context.Cells.AddOrUpdate(cell2);
         }
     }
 }

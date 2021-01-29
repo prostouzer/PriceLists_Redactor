@@ -179,6 +179,10 @@
     <Compile Include="Migrations\202101281121597_column foreignKey.Designer.cs">
       <DependentUpon>202101281121597_column foreignKey.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202101290516312_Nullable FKs for Cell class.cs" />
+    <Compile Include="Migrations\202101290516312_Nullable FKs for Cell class.Designer.cs">
+      <DependentUpon>202101290516312_Nullable FKs for Cell class.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Cell.cs" />
     <Compile Include="Models\Column.cs" />
@@ -287,6 +291,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202101281121597_column foreignKey.resx">
       <DependentUpon>202101281121597_column foreignKey.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202101290516312_Nullable FKs for Cell class.resx">
+      <DependentUpon>202101290516312_Nullable FKs for Cell class.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
