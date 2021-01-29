@@ -45,6 +45,16 @@ namespace PriceLists_Redactor.Migrations
             var cell4 = new Cell() { Data = "10", ColumnId = 4, ItemId = 2 };
             context.Cells.AddOrUpdate(cell1);
             context.Cells.AddOrUpdate(cell2);
+            context.Cells.AddOrUpdate(cell3);
+            context.Cells.AddOrUpdate(cell4);
+
+            // ВТОРОЙ ИТЕМ В PriceList1
+            var item3 = new Item() {Title = "Деревянный шкаф", PriceListId = 1};
+            context.Items.AddOrUpdate(item3);
+            var cell5 = new Cell() { ColumnId = 1, Data = "Вторая однострочная колонка", ItemId = 3 };
+            var cell6 = new Cell() { ColumnId = 2, Data = "0", ItemId = 3 };
+            context.Cells.AddOrUpdate(cell5);
+            context.Cells.AddOrUpdate(cell6);
         }
     }
 }

@@ -32,9 +32,14 @@ namespace PriceLists_Redactor.Controllers
             }
             PriceList priceList = await db.PriceLists.FindAsync(id);
             IEnumerable<Column> columns = db.Columns.Where(c => c.PriceListId == id);
-            IEnumerable<Item> items = db.Items.Where(i => i.Id == id);
-            IEnumerable<Cell> cells = db.Cells.Where(c => c.Item.PriceListId == id);
-            var a = cells.Count();
+            IEnumerable<Item> items = db.Items.Where(i => i.PriceListId == id);
+            //IEnumerable<Cell> cells = db.Cells.Where(c => c.Item.PriceListId == id);
+            IEnumerable<Cell> cells = db.Cells.Where(c => c.Item.PriceListId == 1);
+
+            var colCount = columns.Count();
+            var itemsCount = items.Count();
+            var celCount = cells.Count();
+            
             PriceListViewModel priceListWithItems = new PriceListViewModel(priceList, columns, items, cells);
             if (priceList == null)
             {

@@ -35,9 +35,12 @@
             <tr>
                 <td>@item.Id</td>
                 <td>@item.Title</td>
-                @foreach (Cell cell in Model.Cells)
-                {
-                    <td>@cell.Data</td>
+                @{
+                    var itemCells = Model.Cells.Where(c => c.ItemId == item.Id);
+                    foreach (Cell cell in itemCells)
+                    {
+                        <td>@cell.Data</td>
+                    }
                 }
             </tr>
         }
