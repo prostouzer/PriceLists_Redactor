@@ -35,7 +35,7 @@ namespace PriceLists_Redactor.Controllers
             IEnumerable<Item> items = db.Items.Where(i => i.PriceListId == id);
             IEnumerable<Cell> cells = db.Cells.Where(c => c.Item.PriceListId == id);
             
-            PriceListViewModel priceListWithItems = new PriceListViewModel(priceList, columns, items, cells);
+            PriceListAndItemsViewModel priceListWithItems = new PriceListAndItemsViewModel(priceList, columns, items, cells);
             if (priceList == null)
             {
                 return HttpNotFound();

@@ -1,48 +1,65 @@
 ﻿@using PriceLists_Redactor.Models
-@model PriceLists_Redactor.Models.ViewModels.PriceListViewModel
+@model PriceLists_Redactor.Models.ViewModels.PriceListAndItemsViewModel
 
 @{
     ViewBag.Title = "Подробнее";
 }
 
-<h2>Details</h2>
-
 <div>
-    <h4>PriceList</h4>
     <hr />
     <dl class="dl-horizontal">
         <dt>Прайс-лист:</dt>
         <dd>
             @Html.DisplayFor(model => model.PriceList.Name)
-            @Html.ActionLink("Редактировать", "Edit", new {id = Model.PriceList.Id}) |
+            @Html.ActionLink("Редактировать", "Edit", new { id = Model.PriceList.Id }) |
             @Html.ActionLink("На главную", "Index")
         </dd>
     </dl>
 </div>
 
 <div>
-    <table>
-        <tr>
-            <th> Код товара </th>
-            <th> Название товара</th>
-            @foreach (Column column in Model.Columns)
-            {
-                <th>@column.HeaderText</th>
-            }
-        </tr>
-        @foreach (Item item in Model.Items)
-        {
+    <table id="priceListsDetailsTable">
+        <thead>
             <tr>
-                <td>@item.Id</td>
-                <td>@item.Title</td>
-                @{
-                    var itemCells = Model.Cells.Where(c => c.ItemId == item.Id);
-                    foreach (Cell cell in itemCells)
-                    {
-                        <td>@cell.Data</td>
-                    }
+                <th> Код товара </th>
+                <th> Название товара</th>
+                @foreach (Column column in Model.Columns)
+                {
+                    <th>@column.HeaderText</th>
                 }
             </tr>
-        }
+        </thead>
+        <tbody>
+            @foreach (Item item in Model.Items)
+            {
+                <tr>
+                    <td>@item.Id</td>
+                    <td>@item.Title</td>
+                    @{
+                        var itemCells = Model.Cells.Where(c => c.ItemId == item.Id);
+                        foreach (Cell cell in itemCells)
+                        {
+                            <td>@cell.Data</td>
+                        }
+                    }
+                </tr>
+            }
+        </tbody>
     </table>
 </div>
+
+<link href="https://cdn.datatables.net/1.10.23/css/jquery.dataTables.min.css" rel="stylesheet" />
+
+@section scripts
+{
+    <script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#priceListsDetailsTable').DataTable({
+                language: {
+                    url: "https://cdn.datatables.net/plug-ins/1.10.22/i18n/Russian.json"
+                }
+            });
+        });
+    </script>
+}

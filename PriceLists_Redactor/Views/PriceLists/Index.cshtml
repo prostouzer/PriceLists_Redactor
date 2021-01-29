@@ -9,32 +9,47 @@
 <p>
     @Html.ActionLink("Добавить", "Create")
 </p>
-<table class="table">
-    <tr>
-        <th>
-            Имя
-        </th>
-        <th></th>
-    </tr>
+<div>
+    <table id="priceListsIndexTable">
+        <thead>
+            <tr>
+                <th>№</th>
+                <th>Имя</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @item.Id;
+                        </td>
+                        <td>
+                            @item.Name
+                        </td>
+                        <td>
+                            @Html.ActionLink("Редактировать", "Edit", new { id = item.Id }) |
+                            @Html.ActionLink("Подробнее", "Details", new { id = item.Id }) |
+                            @Html.ActionLink("Удалить", "Delete", new { id = item.Id })
+                        </td>
+                    </tr>
+                }
+        </tbody>
+    </table>
+</div>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Id);
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Name)
-        </td>
-        <td>
-            @Html.ActionLink("Редактировать", "Edit", new {id = item.Id}) |
-            @Html.ActionLink("Подробнее", "Details", new {id = item.Id}) |
-            @Html.ActionLink("Удалить", "Delete", new {id = item.Id})
-        </td>
-    </tr>
-}
+<link href="https://cdn.datatables.net/1.10.23/css/jquery.dataTables.min.css" rel="stylesheet" />
 
-</table>
-
-$(document).Ready( function() {
-$
+@section scripts
+{
+    <script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#priceListsIndexTable').DataTable({
+                language: {
+                    url: "https://cdn.datatables.net/plug-ins/1.10.22/i18n/Russian.json"
+                }
+            });
+        });
+    </script>
 }
