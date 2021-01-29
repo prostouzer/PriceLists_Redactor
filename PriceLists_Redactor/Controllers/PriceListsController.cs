@@ -33,12 +33,7 @@ namespace PriceLists_Redactor.Controllers
             PriceList priceList = await db.PriceLists.FindAsync(id);
             IEnumerable<Column> columns = db.Columns.Where(c => c.PriceListId == id);
             IEnumerable<Item> items = db.Items.Where(i => i.PriceListId == id);
-            //IEnumerable<Cell> cells = db.Cells.Where(c => c.Item.PriceListId == id);
-            IEnumerable<Cell> cells = db.Cells.Where(c => c.Item.PriceListId == 1);
-
-            var colCount = columns.Count();
-            var itemsCount = items.Count();
-            var celCount = cells.Count();
+            IEnumerable<Cell> cells = db.Cells.Where(c => c.Item.PriceListId == id);
             
             PriceListViewModel priceListWithItems = new PriceListViewModel(priceList, columns, items, cells);
             if (priceList == null)
@@ -85,8 +80,6 @@ namespace PriceLists_Redactor.Controllers
         }
 
         // POST: PriceLists/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Edit([Bind(Include = "Id,Name")] PriceList priceList)
