@@ -1,4 +1,5 @@
-﻿@model PriceLists_Redactor.Models.PriceList
+﻿@using PriceLists_Redactor.Models
+@model PriceLists_Redactor.Models.ViewModels.PriceListViewModel
 
 @{
     ViewBag.Title = "Details";
@@ -11,16 +12,33 @@
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.Name)
+            @Html.DisplayNameFor(model => model.PriceList.Name)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Name)
+            @Html.DisplayFor(model => model.PriceList.Name)
+            @Html.ActionLink("Edit", "Edit", new { id = Model.PriceList.Id }) |
+            @Html.ActionLink("Back to List", "Index")
         </dd>
-
     </dl>
 </div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>
+
+<div>
+    <table>
+        <tr>
+            <th> Код товара </th>
+            <th> Название товара</th>
+            @foreach (Column column in Model.Columns)
+            {
+                <th>@column.HeaderText</th>
+            }
+        </tr>
+        @foreach (Item item in Model.Items)
+        {
+            <tr>
+                <td>@item.Id</td>
+                <td>@item.Title</td>
+            </tr>
+        }
+    </table>
+</div>

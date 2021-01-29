@@ -9,6 +9,7 @@ using System.Web;
 using System.Web.Mvc;
 using PriceLists_Redactor.Data;
 using PriceLists_Redactor.Models;
+using PriceLists_Redactor.Models.ViewModels;
 
 namespace PriceLists_Redactor.Controllers
 {
@@ -30,11 +31,15 @@ namespace PriceLists_Redactor.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             PriceList priceList = await db.PriceLists.FindAsync(id);
+            IEnumerable<Column> columns = db.Columns.Where(c => c.PriceListId == id);
+            IEnumerable<Item> items = db.Items.Where(i => i.Id == id);
+            IEnumerable<Cell> cells = db.Cells.Where(c=>c.Item_Id)
+            PriceListViewModel priceListWithItems = new PriceListViewModel(priceList, items);
             if (priceList == null)
             {
                 return HttpNotFound();
             }
-            return View(priceList);
+            return View(priceListWithItems);
         }
 
         // GET: PriceLists/Create
