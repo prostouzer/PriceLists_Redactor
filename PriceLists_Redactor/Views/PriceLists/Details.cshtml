@@ -17,36 +17,34 @@
     </dl>
 </div>
 
-<div>
-    <table id="priceListsDetailsTable">
-        <thead>
+<table id="priceListsDetailsTable">
+    <thead>
+        <tr>
+            <th> Код товара </th>
+            <th> Название товара</th>
+            @foreach (Column column in Model.Columns)
+            {
+                <th>@column.HeaderText</th>
+            }
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (Item item in Model.Items)
+        {
             <tr>
-                <th> Код товара </th>
-                <th> Название товара</th>
-                @foreach (Column column in Model.Columns)
-                {
-                    <th>@column.HeaderText</th>
+                <td>@item.Id</td>
+                <td>@item.Title</td>
+                @{
+                    var itemCells = Model.Cells.Where(c => c.ItemId == item.Id);
+                    foreach (Cell cell in itemCells)
+                    {
+                        <td>@cell.Data</td>
+                    }
                 }
             </tr>
-        </thead>
-        <tbody>
-            @foreach (Item item in Model.Items)
-            {
-                <tr>
-                    <td>@item.Id</td>
-                    <td>@item.Title</td>
-                    @{
-                        var itemCells = Model.Cells.Where(c => c.ItemId == item.Id);
-                        foreach (Cell cell in itemCells)
-                        {
-                            <td>@cell.Data</td>
-                        }
-                    }
-                </tr>
-            }
-        </tbody>
-    </table>
-</div>
+        }
+    </tbody>
+</table>
 
 <link href="https://cdn.datatables.net/1.10.23/css/jquery.dataTables.min.css" rel="stylesheet" />
 
