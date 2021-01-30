@@ -183,6 +183,10 @@
     <Compile Include="Migrations\202101290516312_Nullable FKs for Cell class.Designer.cs">
       <DependentUpon>202101290516312_Nullable FKs for Cell class.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202101300906429_added required attributes to models.cs" />
+    <Compile Include="Migrations\202101300906429_added required attributes to models.Designer.cs">
+      <DependentUpon>202101300906429_added required attributes to models.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Cell.cs" />
     <Compile Include="Models\Column.cs" />
@@ -295,6 +299,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202101290516312_Nullable FKs for Cell class.resx">
       <DependentUpon>202101290516312_Nullable FKs for Cell class.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202101300906429_added required attributes to models.resx">
+      <DependentUpon>202101300906429_added required attributes to models.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
