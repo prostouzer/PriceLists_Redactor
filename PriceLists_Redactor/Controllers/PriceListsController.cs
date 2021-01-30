@@ -49,39 +49,49 @@ namespace PriceLists_Redactor.Controllers
             return View(new PriceListAndColumnsViewModel(new PriceList()));
         }
 
-        // POST: PriceLists/Create=
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<ActionResult> Create(PriceListAndColumnsViewModel priceListAndColumns)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        db.PriceLists.Add(priceListAndColumns.PriceList);
-        //        foreach (Column column in priceListAndColumns.Columns)
-        //        {
-        //            db.Columns.Add(column);
-        //        }
-        //        await db.SaveChangesAsync();
-        //        return RedirectToAction("Index");
-        //    }
-
-        //    return View(priceListAndColumns);
-        //}
-        public JsonResult Create(PriceListAndColumnsViewModel priceListAndColumns)
+        //POST: PriceLists/Create=
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Create(PriceListAndColumnsViewModel priceListAndColumns)
         {
-            if (priceListAndColumns == null)
+            if (ModelState.IsValid)
             {
-                priceListAndColumns = new PriceListAndColumnsViewModel(new PriceList());
+                db.PriceLists.Add(priceListAndColumns.PriceList);
+                foreach (Column column in priceListAndColumns.Columns)
+                {
+                    db.Columns.Add(column);
+                }
+                await db.SaveChangesAsync();
+                return RedirectToAction("Index");
             }
-            db.PriceLists.Add(priceListAndColumns.PriceList);
-            foreach (Column column in priceListAndColumns.Columns)
+
+            return View(priceListAndColumns);
+        }
+
+        public JsonResult InsertPricelist(PriceList priceList)
+        {
+            if (priceList == null)
             {
-                db.Columns.Add(column);
+                priceList = new PriceList();
+            }
+            db.PriceLists.Add(priceList);
+            var insertedRecords = db.SaveChanges();
+            return Json(insertedRecords);
+        }
+
+        public JsonResult InsertColumns(IEnumerable<Column> columns)
+        {
+            if (columns == null)
+            {
+                columns = new List<Column>();
+            }
+
+            foreach (Column col in columns)
+            {
+                db.Columns.Add(col);
             }
             var insertedRecords = db.SaveChanges();
             return Json(insertedRecords);
-            //return RedirectToAction("Index");
-
         }
 
         // GET: PriceLists/Edit/5

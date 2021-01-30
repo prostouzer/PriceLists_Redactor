@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
@@ -8,7 +9,9 @@ namespace PriceLists_Redactor.Models
     public class Column
     {
         public int Id { get; set; }
+        [Required(ErrorMessage = "Заполните поле")]
         public string HeaderText { get; set; }
+        [Required(ErrorMessage = "Выберите тип")]
         public DataType DataType { get; set; }
         public int DataLength {
             get
