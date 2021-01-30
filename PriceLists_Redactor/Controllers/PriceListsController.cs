@@ -68,19 +68,19 @@ namespace PriceLists_Redactor.Controllers
             return View(priceListAndColumns);
         }
 
-        public async Task<ActionResult> InsertPriceListAndColumns(PriceListAndColumnsViewModel priceListAndColumns)
+        public async Task<ActionResult> InsertPriceListAndColumns(PriceList priceList, IEnumerable<Column> columns)
         {
-            if (priceListAndColumns == null)
+            if (priceList == null)
             {
-                priceListAndColumns = new PriceListAndColumnsViewModel(new PriceList());
+                priceList = new PriceList();
             }
 
-            db.PriceLists.Add(priceListAndColumns.PriceList);
+            db.PriceLists.Add(priceList);
             await db.SaveChangesAsync();
 
-            foreach (Column column in priceListAndColumns.Columns)
+            foreach (Column column in columns)
             {
-                column.PriceListId = priceListAndColumns.PriceList.Id;
+                column.PriceListId = priceList.Id;
                 db.Columns.Add(column);
             }
             await db.SaveChangesAsync();
@@ -88,7 +88,7 @@ namespace PriceLists_Redactor.Controllers
             return RedirectToAction("Index");
         }
 
-        public JsonResult InsertPricelist(PriceList priceList)
+        public JsonResult InsertPriceList(PriceList priceList)
         {
             if (priceList == null)
             {

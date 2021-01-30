@@ -52,18 +52,18 @@
         $("#addNewColumnBtn").on('click',
             function () {
                 $('#columnsTBody').append(`<tr id="R${++rowIndex}">
-                            <td><p>Колонка №${rowIndex}</p></td>
-                            <td><input type="text" class="headerText"></td>
-                            <td>
-                            <select class="dataTypeSelect">
-                            <option value=0>Однострочный текст</option>
-                            <option value=1>Многострочный текст</option>
-                            <option value=2>Логическое значение</option>
-                            <option value=3>Число</option>
-                            </select>
-                            </td>
-                            <td><button class="btn btn-danger remove" type="button">Удалить</button></td>
-                        </tr>`);
+                                                <td><p>Колонка №${rowIndex}</p></td>
+                                                <td><input type="text" class="headerText"></td>
+                                                <td>
+                                                <select class="dataTypeSelect">
+                                                <option value=0>Однострочный текст</option>
+                                                <option value=1>Многострочный текст</option>
+                                                <option value=2>Логическое значение</option>
+                                                <option value=3>Число</option>
+                                                </select>
+                                                </td>
+                                                <td><button class="btn btn-danger remove" type="button">Удалить</button></td>
+                                            </tr>`);
             });
 
         $('#columnsTBody').on('click',
@@ -99,29 +99,29 @@
             });
     </script>
     <script>
-        $("#addNewPriceListBtn").on('click',
-            function () {
-                var columns = new Array();
-                $("#columnsTBody TR").each(function () {
-                    var currentRow = $(this);
-                    var currentRowColumns = {};
-                    currentRowColumns.HeaderText = currentRow.find(".headerText").val();
-                    currentRowColumns.DataType = currentRow.find(".dataTypeSelect").val();
-                    columns.push(currentRowColumns);
-                });
-                @Model.Columns = columns;
+        $("#addNewPriceListBtn").on('click', function () {
+            var priceList = {};
+            priceList.Name = ($("#PriceListName").val());
 
-                @Model.PriceList.Name = $("#PriceListName").val();
-                $.ajax({
-                    type: "POST",
-                    url: "/PriceLists/InsertPriceListAndColumns",
-                    data: JSON.stringify(@Html.Raw(Json.Encode(Model))),
-                    contentType: "application/json; charset=utf-8",
-                    dataType: "json",
-                    success: function () {
-                        alert("Успех");
-                    }
-                });
+            var columns = new Array();
+            $("#columnsTBody TR").each(function () {
+                var currentRow = $(this);
+                var currentRowColumns = {};
+                currentRowColumns.HeaderText = currentRow.find(".headerText").val();
+                currentRowColumns.DataType = currentRow.find(".dataTypeSelect").val();
+                columns.push(currentRowColumns);
             });
+
+            $.ajax({
+                type: "POST",
+                url: "/PriceLists/InsertPriceList",
+                data: JSON.stringify(priceList),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function () {
+                    alert("Успех");
+                }
+            });
+        })
     </script>
 }
