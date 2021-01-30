@@ -34,7 +34,7 @@ namespace PriceLists_Redactor.Controllers
             IEnumerable<Column> columns = db.Columns.Where(c => c.PriceListId == id);
             IEnumerable<Item> items = db.Items.Where(i => i.PriceListId == id);
             IEnumerable<Cell> cells = db.Cells.Where(c => c.Item.PriceListId == id);
-            
+
             PriceListAndItemsViewModel priceListWithItems = new PriceListAndItemsViewModel(priceList, columns, items, cells);
             if (priceList == null)
             {
@@ -50,22 +50,38 @@ namespace PriceLists_Redactor.Controllers
         }
 
         // POST: PriceLists/Create=
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create(PriceListAndColumnsViewModel priceListAndColumns)
-        {
-            if (ModelState.IsValid)
-            {
-                db.PriceLists.Add(priceListAndColumns.PriceList);
-                foreach (Column column in priceListAndColumns.Columns)
-                {
-                    db.Columns.Add(column);
-                }
-                await db.SaveChangesAsync();
-                return RedirectToAction("Index");
-            }
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<ActionResult> Create(PriceListAndColumnsViewModel priceListAndColumns)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        db.PriceLists.Add(priceListAndColumns.PriceList);
+        //        foreach (Column column in priceListAndColumns.Columns)
+        //        {
+        //            db.Columns.Add(column);
+        //        }
+        //        await db.SaveChangesAsync();
+        //        return RedirectToAction("Index");
+        //    }
 
-            return View(priceListAndColumns);
+        //    return View(priceListAndColumns);
+        //}
+        public JsonResult Create(PriceListAndColumnsViewModel priceListAndColumns)
+        {
+            if (priceListAndColumns == null)
+            {
+                priceListAndColumns = new PriceListAndColumnsViewModel(new PriceList());
+            }
+            db.PriceLists.Add(priceListAndColumns.PriceList);
+            foreach (Column column in priceListAndColumns.Columns)
+            {
+                db.Columns.Add(column);
+            }
+            var insertedRecords = db.SaveChanges();
+            return Json(insertedRecords);
+            //return RedirectToAction("Index");
+
         }
 
         // GET: PriceLists/Edit/5
