@@ -46,22 +46,26 @@ namespace PriceLists_Redactor.Controllers
         // GET: PriceLists/Create
         public ActionResult Create()
         {
-            return View();
+            return View(new PriceListAndColumnsViewModel(new PriceList()));
         }
 
         // POST: PriceLists/Create=
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Include = "Id,Name")] PriceList priceList)
+        public async Task<ActionResult> Create(PriceListAndColumnsViewModel priceListAndColumns)
         {
             if (ModelState.IsValid)
             {
-                db.PriceLists.Add(priceList);
+                db.PriceLists.Add(priceListAndColumns.PriceList);
+                foreach (Column column in priceListAndColumns.Columns)
+                {
+                    db.Columns.Add(column);
+                }
                 await db.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
 
-            return View(priceList);
+            return View(priceListAndColumns);
         }
 
         // GET: PriceLists/Edit/5

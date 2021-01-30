@@ -1,34 +1,41 @@
-﻿@model PriceLists_Redactor.Models.PriceList
+﻿@using PriceLists_Redactor.Models
+@model PriceLists_Redactor.Models.ViewModels.PriceListAndColumnsViewModel
 
 @{
     ViewBag.Title = "Create";
 }
 
-<h2>Create</h2>
+<h2>Добавить новый прайс-лист</h2>
 
-
-@using (Html.BeginForm()) 
+@using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    
-    <div class="form-horizontal">
-        <h4>PriceList</h4>
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        <div class="form-group">
-            @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
-            </div>
-        </div>
 
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
-            </div>
-        </div>
-    </div>
+    <table>
+        <tr>
+            <td>
+                @Html.EditorFor(model => model.PriceList.Name, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.PriceList.Name, "", new { @class = "text-danger" })
+            </td>
+            <td>
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            </td>
+            <td>
+                <input type="submit" value="Добавить" class="btn btn-default" />
+            </td>
+        </tr>
+    </table>
+
+    <table class="table" align="center">
+        <thead>
+        <th>№ колонки</th>
+        <th>Данные</th>
+        <th>Тип данных</th>
+        </thead>
+        <tbody id="columnsTBody">
+        </tbody>
+    </table>
+    <button class="btn btn-md btn-primary" id="addNewColumnBtn" type="button">Новая колонка</button>
 }
 
 <div>
@@ -37,4 +44,48 @@
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        var rowIndex = 0;
+        $("#addNewColumnBtn").on('click', function () {
+            @{
+                Model.Columns.Add(new Column { PriceListId = Model.PriceList.Id });
+            }
+            $('#columnsTBody').append(`<tr id="R${++rowIndex}">
+                    <td><p>Колонка №${rowIndex}</p></td>
+                    <td>@Html.EditorFor(c=>c.Columns[0].HeaderText)</td>
+                    <td>@Html.EditorFor(c=>c.Columns[0].DataType)</td>
+                    <td><button class="btn btn-danger remove" type="button">Удалить</button></td>
+                </tr>`);
+        });
+
+        $('#columnsTBody').on('click', '.remove', function () {
+
+            // Все элементы впереди текущей удаляемой строки
+            var child = $(this).closest('tr').nextAll();
+
+            // Проход по всем следующим строкам и изменение их id
+            child.each(function () {
+
+                // Получение id <tr>
+                var id = $(this).attr('id');
+
+                // Получение ячейки с id
+                var index = $(this).children('.row-index').children('p');
+
+                // Извлечение id строки
+                var dig = parseInt(id.substring(1));
+
+                // Изменение ячейки номера строки
+                index.html(`Колонка №${dig - 1}`);
+
+                // Изменение id строки
+                $(this).attr('id', `R${dig - 1}`);
+            });
+
+            // Удаление текущей строки
+            $(this).closest('tr').remove();
+
+            rowIndex--;
+        });
+    </script>
 }
