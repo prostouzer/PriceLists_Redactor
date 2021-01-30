@@ -68,7 +68,7 @@ namespace PriceLists_Redactor.Controllers
             return View(priceListAndColumns);
         }
 
-        public async Task<ActionResult> InsertPriceListAndColumns(PriceList priceList, IEnumerable<Column> columns)
+        public ActionResult InsertPriceListAndColumns(PriceList priceList, IEnumerable<Column> columns)
         {
             if (priceList == null)
             {
@@ -76,16 +76,17 @@ namespace PriceLists_Redactor.Controllers
             }
 
             db.PriceLists.Add(priceList);
-            await db.SaveChangesAsync();
+            db.SaveChanges();
 
             foreach (Column column in columns)
             {
                 column.PriceListId = priceList.Id;
                 db.Columns.Add(column);
             }
-            await db.SaveChangesAsync();
+            db.SaveChanges();
 
-            return RedirectToAction("Index");
+            // т.к. ajax-post запрос то нет смысла использовать RedirectToAction - не среагирует
+            return Json(Url.Action("Index", "PriceLists"));
         }
 
         public JsonResult InsertPriceList(PriceList priceList)
