@@ -187,6 +187,14 @@
     <Compile Include="Migrations\202101300906429_added required attributes to models.Designer.cs">
       <DependentUpon>202101300906429_added required attributes to models.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202101300928574_Cell only ColumnId nullable.cs" />
+    <Compile Include="Migrations\202101300928574_Cell only ColumnId nullable.Designer.cs">
+      <DependentUpon>202101300928574_Cell only ColumnId nullable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202101301021196_Nullable Cell FKs.cs" />
+    <Compile Include="Migrations\202101301021196_Nullable Cell FKs.Designer.cs">
+      <DependentUpon>202101301021196_Nullable Cell FKs.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Cell.cs" />
     <Compile Include="Models\Column.cs" />
@@ -302,6 +310,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202101300906429_added required attributes to models.resx">
       <DependentUpon>202101300906429_added required attributes to models.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202101300928574_Cell only ColumnId nullable.resx">
+      <DependentUpon>202101300928574_Cell only ColumnId nullable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202101301021196_Nullable Cell FKs.resx">
+      <DependentUpon>202101301021196_Nullable Cell FKs.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
