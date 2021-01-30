@@ -32,7 +32,7 @@ namespace PriceLists_Redactor.Migrations
             context.Columns.AddOrUpdate(column2);
             context.Columns.AddOrUpdate(column3);
             context.Columns.AddOrUpdate(column4);
-            //context.SaveChanges();
+            context.SaveChanges();
 
             var item1 = new Item() { Title = "Обеденный стол", PriceListId = 1 };
             var item2 = new Item() { Title = "Стул", PriceListId = 2 };
@@ -46,10 +46,14 @@ namespace PriceLists_Redactor.Migrations
             var cell2 = new Cell() { Data = "1", ItemId = 1, ColumnId = 2 };
             var cell3 = new Cell() { Data = "Хороший, деревянный стул. ТЕСТ МНОГОСТРОЧНОЙ КОЛОНКИ. ТЕСТ МНОГОСТРОЧНОЙ КОЛОНКИ", ItemId = 2, ColumnId = 3 };
             var cell4 = new Cell() { Data = "10", ItemId = 2, ColumnId = 4 };
+            var cell5 = new Cell() { Data = "Вторая однострочная колонка", ColumnId = 1, ItemId = 3 };
+            var cell6 = new Cell() { Data = "0", ColumnId = 2, ItemId = 3 };
             context.Cells.AddOrUpdate(cell1);
             context.Cells.AddOrUpdate(cell2);
             context.Cells.AddOrUpdate(cell3);
             context.Cells.AddOrUpdate(cell4);
+            context.Cells.AddOrUpdate(cell5);
+            context.Cells.AddOrUpdate(cell6);
 
             //var item1 = new Item() { Title = "Обеденный стол", PriceListId = 1 };
             //var item2 = new Item() { Title = "Стул", PriceListId = 2 };
