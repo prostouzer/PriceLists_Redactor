@@ -21,7 +21,7 @@
                 @Html.ValidationSummary(true, "", new { @class = "text-danger" })
             </td>
             <td>
-                <input type="submit" value="Добавить" class="btn btn-default" />
+                <button class="btn btn-default" id="addNewPriceListBtn" type="button">Добавить</button>
             </td>
         </tr>
     </table>
@@ -46,46 +46,66 @@
     @Scripts.Render("~/bundles/jqueryval")
     <script>
         var rowIndex = 0;
-        $("#addNewColumnBtn").on('click', function () {
-            @{
-                Model.Columns.Add(new Column { PriceListId = Model.PriceList.Id });
-            }
-            $('#columnsTBody').append(`<tr id="R${++rowIndex}">
+        $("#addNewColumnBtn").on('click',
+            function() {
+                $('#columnsTBody').append(`<tr id="R${++rowIndex}">
                     <td><p>Колонка №${rowIndex}</p></td>
-                    <td>@Html.EditorFor(c=>c.Columns[0].HeaderText)</td>
-                    <td>@Html.EditorFor(c=>c.Columns[0].DataType)</td>
+                    <td><input type="text" id="HeaderText"></td>
+                    <td>
+                    <select id="dataTypeSelect">
+                    <option>Однострочный текст</option>
+                    <option>Многострочный текст</option>
+                    <option>Логическое значение</option>
+                    <option>Число</option>
+                    </select>
+                    </td>
                     <td><button class="btn btn-danger remove" type="button">Удалить</button></td>
                 </tr>`);
-        });
-
-        $('#columnsTBody').on('click', '.remove', function () {
-
-            // Все элементы впереди текущей удаляемой строки
-            var child = $(this).closest('tr').nextAll();
-
-            // Проход по всем следующим строкам и изменение их id
-            child.each(function () {
-
-                // Получение id <tr>
-                var id = $(this).attr('id');
-
-                // Получение ячейки с id
-                var index = $(this).children('.row-index').children('p');
-
-                // Извлечение id строки
-                var dig = parseInt(id.substring(1));
-
-                // Изменение ячейки номера строки
-                index.html(`Колонка №${dig - 1}`);
-
-                // Изменение id строки
-                $(this).attr('id', `R${dig - 1}`);
             });
 
-            // Удаление текущей строки
-            $(this).closest('tr').remove();
+        $('#columnsTBody').on('click',
+            '.remove',
+            function() {
 
-            rowIndex--;
-        });
+                // Все элементы впереди текущей удаляемой строки
+                var child = $(this).closest('tr').nextAll();
+
+                // Проход по всем следующим строкам и изменение их id
+                child.each(function() {
+
+                    // Получение id <tr>
+                    var id = $(this).attr('id');
+
+                    // Получение ячейки с id
+                    var index = $(this).children('.row-index').children('p');
+
+                    // Извлечение id строки
+                    var dig = parseInt(id.substring(1));
+
+                    // Изменение ячейки номера строки
+                    index.html(`Колонка №${dig - 1}`);
+
+                    // Изменение id строки
+                    $(this).attr('id', `R${dig - 1}`);
+                });
+
+                // Удаление текущей строки
+                $(this).closest('tr').remove();
+
+                rowIndex--;
+            });
+    </script>
+    <script>
+        $("#addNewColumnBtn").on('click',
+            function() {
+                var columns = new Array();
+                $("#columnsTBody TR").each(function() {
+                    var currentRow = $(this);
+                    var currentRowColumns = {};
+                    columns.header_text = currentRow.find("td").eq(1).html();
+                    columns.data_type = currentRow.find("td").eq(2).html();
+                    columns.push(currentRowColumns);
+                })
+            });
     </script>
 }
