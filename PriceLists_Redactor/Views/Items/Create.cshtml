@@ -7,10 +7,10 @@
 <h2>Create</h2>
 
 
-@using (Html.BeginForm()) 
+@using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    
+
     <div class="form-horizontal">
         <h4>Item</h4>
         <hr />
@@ -26,7 +26,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.PriceListId, "PriceListId", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownList("PriceListId", null, htmlAttributes: new { @class = "form-control",  })
+                @Html.DropDownList("PriceListId", null, htmlAttributes: new { @class = "form-control", id= "priceListDropDown" })
                 @Html.ValidationMessageFor(model => model.PriceListId, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -36,7 +36,7 @@
                 <input type="submit" value="Create" class="btn btn-default" />
             </div>
         </div>
-        
+
         <table id="cellsTable">
             <thead id="cellsTHead">
             <th>TEST</th>
@@ -48,7 +48,7 @@
 }
 
 <div>
-    <br/>
+    <br />
     @Html.ActionLink("Назад", "Index")
 </div>
 
@@ -57,17 +57,13 @@
     <script>
         $("#priceListDropDown").on('change',
             function () {
-                var data = { priceListId: "1"};
+                var data = { priceListId: 1 };
                 $.ajax({
                     type: "GET",
-                    url: "/GetColumnsOfAPriceList",
-                    data: JSON.stringify(data),
-                    contentType: "application/json",
-                    success: function() {
-                        alert("blbl");
-                    },
-                    error: function() {
-                        alert("FAIL");
+                    url: "GetColumnsOfAPriceList",
+                    data: data,
+                    success: function () {
+                        console.log("SUCCESS");
                     }
                 });
             });

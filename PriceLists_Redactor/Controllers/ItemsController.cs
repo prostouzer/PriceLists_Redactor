@@ -30,10 +30,9 @@ namespace PriceLists_Redactor.Controllers
             return View();
         }
 
-        public JsonResult GetColumnsOfAPriceList(string priceListId)
+        public JsonResult GetColumnsOfAPriceList(int priceListId)
         {
-            int id = Convert.ToInt32(priceListId);
-            var columns = db.Columns.Where(c => c.PriceListId == id);
+            var columns = db.Columns.Where(c => c.PriceListId == priceListId);
 
             return Json( columns, JsonRequestBehavior.AllowGet);
         }
