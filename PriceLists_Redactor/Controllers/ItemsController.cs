@@ -9,6 +9,7 @@ using System.Web;
 using System.Web.Mvc;
 using PriceLists_Redactor.Data;
 using PriceLists_Redactor.Models;
+using PriceLists_Redactor.Models.ViewModels;
 
 namespace PriceLists_Redactor.Controllers
 {
@@ -26,7 +27,9 @@ namespace PriceLists_Redactor.Controllers
         // GET: Items/Create
         public ActionResult Create()
         {
-            ViewBag.PriceListId = new SelectList(db.PriceLists, "Id", "Name");
+            SelectList priceLists = new SelectList(db.PriceLists, "Id", "Name");
+            ViewBag.PriceLists = priceLists;
+            //ViewBag.PriceListId = new SelectList(db.PriceLists, "Id", "Name");
             return View();
         }
 
@@ -40,17 +43,27 @@ namespace PriceLists_Redactor.Controllers
         // POST: Items/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create(Item item)
+        public async Task<ActionResult> Create(ItemAndCellsViewModel itemAndCells)
         {
             if (ModelState.IsValid)
             {
+                var item = itemAndCells.Item;
                 db.Items.Add(item);
+                await db.SaveChangesAsync();
+
+                foreach (var cell in itemAndCells.Cells)
+                {
+                    cell.ItemId = item.Id;
+                    db.Cells.Add(cell);
+                }
                 await db.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
 
-            ViewBag.PriceListId = new SelectList(db.PriceLists, "Id", "Name", item.PriceListId);
-            return View(item);
+            SelectList priceLists = new SelectList(db.PriceLists, "Id", "Name", itemAndCells.Item.PriceListId);
+            ViewBag.PriceLists = priceLists;
+            //ViewBag.PriceListId = new SelectList(db.PriceLists, "Id", "Name", itemAndCells.Item.PriceListId);
+            return View(itemAndCells);
         }
 
         // GET: Items/Edit/5
