@@ -64,14 +64,24 @@
                     function (result) {
                         var items = [];
                         $("#cellsTHead").empty();
+                        $("#cellsTBody").empty();
                         $.each(result,
                             function (key, val) {
-                                items.push('<th id="' + key + '">' + val.HeaderText + '</th>');
-                            });
-
-                        $.each(items,
-                            function() {
-                                $("#cellsTHead").append(this);
+                                $("#cellsTHead").append('<th id="' + key + '">' + val.HeaderText + '</th>');
+                                switch (val.DataType) {
+                                    case 0: //singleLine
+                                        $("#cellsTBody").append('<td><input id="singleLine" type="text" maxlength="' + val.DataLength + '"</td>"');
+                                        break;
+                                    case 1: //multiLine
+                                        $("#cellsTBody").append('<td><input id="multiLine" type="text" maxlength="' + val.DataLength + '"</td>"');
+                                        break;
+                                    case 2: //bool
+                                        $("#cellsTBody").append('<td><select id="bool"> <option value=0>Ложь</option> <option value=1>Истина</option> </select></td>');
+                                        break;
+                                    case 3: //numeric
+                                        $("#cellsTBody").append('<td><input id="numeric" type="number" maxlength="' + val.DataLength + '"</td>"');
+                                        break;
+                                };
                             });
                     });
             });
