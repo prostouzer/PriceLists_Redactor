@@ -26,7 +26,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.PriceListId, "PriceListId", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownList("PriceListId", null, htmlAttributes: new { @class = "form-control" })
+                @Html.DropDownList("PriceListId", null, htmlAttributes: new { @class = "form-control",  })
                 @Html.ValidationMessageFor(model => model.PriceListId, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -36,6 +36,14 @@
                 <input type="submit" value="Create" class="btn btn-default" />
             </div>
         </div>
+        
+        <table id="cellsTable">
+            <thead id="cellsTHead">
+            <th>TEST</th>
+            </thead>
+            <tbody id="cellsTBody">
+            </tbody>
+        </table>
     </div>
 }
 
@@ -46,4 +54,21 @@
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        $("#priceListDropDown").on('change',
+            function () {
+                var data = 1;
+                $.ajax({
+                    type: "GET",
+                    url: "Items/GetColumnsOfAPriceList",
+                    data: data,
+                    success: function() {
+                        alert("blbl");
+                    },
+                    error: function() {
+                        alert("FAIL");
+                    }
+                });
+            });
+    </script>
 }

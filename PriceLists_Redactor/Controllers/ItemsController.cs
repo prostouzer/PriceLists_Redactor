@@ -30,6 +30,14 @@ namespace PriceLists_Redactor.Controllers
             return View();
         }
 
+        public JsonResult GetColumnsOfAPriceList(int? mypriceListId)
+        {
+            IEnumerable<Column> columns = new List<Column>();
+            columns = db.Columns.Where(c => c.PriceListId == mypriceListId);
+
+            return Json(new { columns = columns }, JsonRequestBehavior.AllowGet);
+        }
+
         // POST: Items/Create
         [HttpPost]
         [ValidateAntiForgeryToken]

@@ -107,7 +107,6 @@
             $("#columnsTBody TR").each(function() {
                 var currentRow = $(this);
                 var currentRowColumns = {};
-                currentRowColumns.PriceListId = 999;
                 currentRowColumns.HeaderText = currentRow.find(".headerText").val();
                 currentRowColumns.DataType = currentRow.find(".dataTypeSelect").val();
                 columns.push(currentRowColumns);

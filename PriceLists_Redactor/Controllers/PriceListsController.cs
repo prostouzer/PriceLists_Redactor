@@ -68,7 +68,7 @@ namespace PriceLists_Redactor.Controllers
             return View(priceListAndColumns);
         }
 
-        public ActionResult InsertPriceListAndColumns(PriceList priceList, IEnumerable<Column> columns)
+        public JsonResult InsertPriceListAndColumns(PriceList priceList, IEnumerable<Column> columns)
         {
             if (priceList == null)
             {
@@ -87,32 +87,6 @@ namespace PriceLists_Redactor.Controllers
 
             // т.к. ajax-post запрос то нет смысла использовать RedirectToAction - не среагирует
             return Json(Url.Action("Index", "PriceLists"));
-        }
-
-        public JsonResult InsertPriceList(PriceList priceList)
-        {
-            if (priceList == null)
-            {
-                priceList = new PriceList();
-            }
-            db.PriceLists.Add(priceList);
-            var insertedRecords = db.SaveChanges();
-            return Json(insertedRecords);
-        }
-
-        public JsonResult InsertColumns(IEnumerable<Column> columns)
-        {
-            if (columns == null)
-            {
-                columns = new List<Column>();
-            }
-
-            foreach (Column col in columns)
-            {
-                db.Columns.Add(col);
-            }
-            var insertedRecords = db.SaveChanges();
-            return Json(insertedRecords);
         }
 
         // GET: PriceLists/Edit/5
