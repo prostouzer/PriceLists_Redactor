@@ -32,7 +32,7 @@ namespace PriceLists_Redactor.Controllers
 
         public JsonResult GetColumnsOfAPriceList(int priceListId)
         {
-            var columns = db.Columns.Where(c => c.PriceListId == priceListId);
+            IEnumerable<Column> columns = db.Columns.Where(c => c.PriceListId == priceListId);
 
             return Json( columns, JsonRequestBehavior.AllowGet);
         }
