@@ -200,6 +200,7 @@
     <Compile Include="Models\Column.cs" />
     <Compile Include="Models\Item.cs" />
     <Compile Include="Models\PriceList.cs" />
+    <Compile Include="Models\ViewModels\ItemAndCellsViewModel.cs" />
     <Compile Include="Models\ViewModels\PriceListAndColumnsViewModel.cs" />
     <Compile Include="Models\ViewModels\PriceListAndItemsViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

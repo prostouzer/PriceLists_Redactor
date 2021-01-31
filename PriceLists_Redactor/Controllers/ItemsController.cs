@@ -40,7 +40,7 @@ namespace PriceLists_Redactor.Controllers
         // POST: Items/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Include = "Id,Title,PriceListId")] Item item)
+        public async Task<ActionResult> Create(Item item)
         {
             if (ModelState.IsValid)
             {
