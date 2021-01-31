@@ -57,11 +57,12 @@
     <script>
         $("#priceListDropDown").on('change',
             function () {
-                var data = 1;
+                var data = { priceListId: "1"};
                 $.ajax({
                     type: "GET",
-                    url: "Items/GetColumnsOfAPriceList",
-                    data: data,
+                    url: "/GetColumnsOfAPriceList",
+                    data: JSON.stringify(data),
+                    contentType: "application/json",
                     success: function() {
                         alert("blbl");
                     },

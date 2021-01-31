@@ -30,12 +30,12 @@ namespace PriceLists_Redactor.Controllers
             return View();
         }
 
-        public JsonResult GetColumnsOfAPriceList(int? mypriceListId)
+        public JsonResult GetColumnsOfAPriceList(string priceListId)
         {
-            IEnumerable<Column> columns = new List<Column>();
-            columns = db.Columns.Where(c => c.PriceListId == mypriceListId);
+            int id = Convert.ToInt32(priceListId);
+            var columns = db.Columns.Where(c => c.PriceListId == id);
 
-            return Json(new { columns = columns }, JsonRequestBehavior.AllowGet);
+            return Json( columns, JsonRequestBehavior.AllowGet);
         }
 
         // POST: Items/Create
