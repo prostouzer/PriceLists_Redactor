@@ -26,7 +26,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Item.PriceListId, "PriceListId", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownListFor(model => model.Item.PriceListId, ViewBag.PriceLists as SelectList)
+                @Html.DropDownListFor(model => model.Item.PriceListId, ViewBag.PriceLists as SelectList, htmlAttributes: new { @class = "form-control", id = "priceListDropDown" })
                 @Html.ValidationMessageFor(model => model.Item.PriceListId, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -34,7 +34,7 @@
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
                 <input id="testValid" type="button" value="TEST VALID" />
-                <input id="addNewItemWithCells" type="Submit" Value="Добавить" />
+                <input id="addNewItemWithCells" type="button" Value="Добавить" />
             </div>
         </div>
 
@@ -58,41 +58,75 @@
     @Scripts.Render("~/bundles/jqueryval")
     <script>
         $("#priceListDropDown").on('change',
-            function() {
+            function () {
                 var data = $("#priceListDropDown").val();
                 $.getJSON('GetColumnsOfAPriceList',
                     { priceListId: data },
-                    function(result) {
+                    function (result) {
                         var items = [];
                         $("#cellsTHead").empty();
                         $("#cellsTBody").empty();
                         $.each(result,
-                            function(key, val) {
+                            function (key, val) {
                                 $("#cellsTHead").append('<th id="' + key + '">' + val.HeaderText + '</th>');
                                 switch (val.DataType) {
-                                case 0: //singleLine
-                                    $("#cellsTBody").append('<td><input id="singleLine" type="text" maxlength="' +
-                                        val.DataLength +
-                                        '"</td>"');
-                                    break;
-                                case 1: //multiLine
-                                    $("#cellsTBody").append('<td><input id="multiLine" type="text" maxlength="' +
-                                        val.DataLength +
-                                        '"</td>"');
-                                    break;
-                                case 2: //bool
-                                    $("#cellsTBody")
-                                        .append(
-                                            '<td><select id="bool"> <option value=0>Ложь</option> <option value=1>Истина</option> </select></td>');
-                                    break;
-                                case 3: //numeric
-                                    $("#cellsTBody").append('<td><input id="numeric" type="number" maxlength="' +
-                                        val.DataLength +
-                                        '"</td>"');
-                                    break;
+                                    case 0: //singleLine
+                                        $("#cellsTBody").append('<td><input class="data" type="text" maxlength="' +
+                                            val.DataLength +
+                                            '"</td>"');
+                                        break;
+                                    case 1: //multiLine
+                                        $("#cellsTBody").append('<td><input class="data" type="text" maxlength="' +
+                                            val.DataLength +
+                                            '"</td>"');
+                                        break;
+                                    case 2: //bool
+                                        $("#cellsTBody")
+                                            .append(
+                                                '<td><select class="data"> <option value=0>Ложь</option> <option value=1>Истина</option> </select></td>');
+                                        break;
+                                    case 3: //numeric
+                                        $("#cellsTBody").append('<td><input class="data" type="number" maxlength="' +
+                                            val.DataLength +
+                                            '"</td>"');
+                                        break;
                                 };
                             });
                     });
             });
+    </script>
+    <script>
+        $("#addNewItemWithCells").on('click', function () {
+            var item = {};
+            item.PriceListId = ($("#priceListDropDown").val());
+            item.Title = ($("#itemName").val());
+
+            var cells = new Array();
+            $("#cellsTBody TR").each(function () {
+                var currentRow = $(this);
+                var currentRowColumns = {};
+                currentRowColumns.Data = currentRow.find(".data").val();
+                cells.push(currentRowColumns);
+            });
+            //$("#cellsTBody TR TD").each(function () {
+            //    var currentTD = $(this);
+            //    var currentCell = {};
+            //    currentCell.Data = currentTD.val();
+            //    cells.Push(currentCell);
+            //});
+
+            var data = JSON.stringify({ item: item, cells: cells });
+            $.ajax({
+                type: "POST",
+                url: "/Items/InsertItemAndCells",
+                data: data,
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (data) {
+                    alert("Успех");
+                    window.location.href = data;
+                }
+            });
+        })
     </script>
 }

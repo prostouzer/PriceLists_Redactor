@@ -14,7 +14,7 @@
     <table>
         <tr>
             <td>
-                @Html.EditorFor(model => model.PriceList.Name, new { htmlAttributes = new { @class = "form-control", id = "PriceListName" } })
+                @Html.EditorFor(model => model.PriceList.Name, new { htmlAttributes = new { @class = "form-control", id = "priceListName" } })
                 @Html.ValidationMessageFor(model => model.PriceList.Name, "", new { @class = "text-danger" })
             </td>
             <td>
@@ -101,7 +101,7 @@
     <script>
         $("#addNewPriceListBtn").on('click', function () {
             var priceList = {};
-            priceList.Name = ($("#PriceListName").val());
+            priceList.Name = ($("#priceListName").val());
 
             var columns = new Array();
             $("#columnsTBody TR").each(function() {

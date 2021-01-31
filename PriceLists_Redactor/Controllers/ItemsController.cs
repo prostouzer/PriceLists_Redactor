@@ -66,6 +66,27 @@ namespace PriceLists_Redactor.Controllers
             return View(itemAndCells);
         }
 
+        public JsonResult InsertItemAndCells(Item item, IEnumerable<Cell> cells)
+        {
+            //if (item == null) TODO VALIDATE
+            //{
+            //    item = new Item();
+            //}
+
+            db.Items.Add(item);
+            db.SaveChanges();
+
+            foreach (Cell cell in cells)
+            {
+                cell.ItemId = item.Id;
+                db.Cells.Add(cell);
+            }
+            db.SaveChanges();
+
+            // т.к. ajax-post запрос то нет смысла использовать RedirectToAction - не среагирует
+            return Json(Url.Action("Index", "Items"));
+        }
+
         // GET: Items/Edit/5
         public async Task<ActionResult> Edit(int? id)
         {
