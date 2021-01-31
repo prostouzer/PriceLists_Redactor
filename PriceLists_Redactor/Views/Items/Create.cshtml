@@ -57,15 +57,17 @@
     <script>
         $("#priceListDropDown").on('change',
             function () {
-                var data = { priceListId: 1 };
-                $.ajax({
-                    type: "GET",
-                    url: "GetColumnsOfAPriceList",
-                    data: data,
-                    success: function () {
-                        console.log("SUCCESS");
-                    }
-                });
+                var data = $("#priceListDropDown").val();
+                $.getJSON('GetColumnsOfAPriceList',
+                    { priceListId: data },
+                    function(result) {
+                        var items = [];
+                        $.each(result,
+                            function(key, val) {
+                                items.push('<td id="' + key + '">' + val + '</td>');
+                            });
+                        console.log("another success");
+                    });
             });
     </script>
 }
