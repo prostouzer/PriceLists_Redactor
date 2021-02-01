@@ -81,25 +81,37 @@ namespace PriceLists_Redactor.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             PriceList priceList = await db.PriceLists.FindAsync(id);
+
+            List<Column> columns = db.Columns.Where(c => c.PriceListId == priceList.Id).ToList();
+            PriceListAndColumnsViewModel priceListAndColumns = new PriceListAndColumnsViewModel(priceList) {Columns =  columns};
+
             if (priceList == null)
             {
                 return HttpNotFound();
             }
-            return View(priceList);
+            return View(priceListAndColumns);
         }
 
         // POST: PriceLists/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit([Bind(Include = "Id,Name")] PriceList priceList)
+        public async Task<ActionResult> Edit(PriceListAndColumnsViewModel priceListAndColumns)
         {
             if (ModelState.IsValid)
             {
+                var priceList = priceListAndColumns.PriceList;
                 db.Entry(priceList).State = EntityState.Modified;
+                var columns = priceListAndColumns.Columns;
+                foreach (Column column in columns)
+                {
+                    db.Entry(column).State = EntityState.Modified;
+                }
                 await db.SaveChangesAsync();
-                return RedirectToAction("Index");
+                return Json(Url.Action("Index", "PriceLists"));
             }
-            return View(priceList);
+
+            priceListAndColumns.Columns = db.Columns.Where(c => c.PriceListId == priceListAndColumns.PriceList.Id).ToList();
+            return View(priceListAndColumns);
         }
 
         // GET: PriceLists/Delete/5

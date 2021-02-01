@@ -12,5 +12,12 @@ namespace PriceLists_Redactor.Models.ViewModels
             PriceList = priceList;
             Columns = new List<Column>();
         }
+
+        // для Edit'а ?
+        public PriceListAndColumnsViewModel()
+        {
+            PriceList = new PriceList();
+            Columns = new List<Column>();
+        }
     }
 }

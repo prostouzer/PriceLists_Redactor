@@ -61,7 +61,6 @@ namespace PriceLists_Redactor.Controllers
 
             SelectList priceLists = new SelectList(db.PriceLists, "Id", "Name", itemAndCells.Item.PriceListId);
             ViewBag.PriceLists = priceLists;
-            //ViewBag.PriceListId = new SelectList(db.PriceLists, "Id", "Name", itemAndCells.Item.PriceListId);
             return View(itemAndCells);
         }
 
