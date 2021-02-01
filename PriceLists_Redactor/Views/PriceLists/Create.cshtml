@@ -55,18 +55,18 @@
         $("#addNewColumnBtn").on('click',
             function() {
                 $('#columnsTBody').append(`<tr id="R${++rowIndex}">
-                                                            <td><p>Колонка №${rowIndex}</p></td>
-                                                            <td><input type="text" id="headerText" class="form-control"></td>
-                                                            <td>
-                                                            <select id="dataTypeSelect" class="form-control">
-                                                            <option value=0>Однострочный текст</option>
-                                                            <option value=1>Многострочный текст</option>
-                                                            <option value=2>Логическое значение</option>
-                                                            <option value=3>Число</option>
-                                                            </select>
-                                                            </td>
-                                                            <td><button class="btn btn-danger remove" type="button">Удалить</button></td>
-                                                        </tr>`);
+                                                                    <td><p>Колонка №${rowIndex}</p></td>
+                                                                    <td><input type="text" id="headerText" class="form-control"></td>
+                                                                    <td>
+                                                                    <select id="dataTypeSelect" class="form-control">
+                                                                    <option value=0>Однострочный текст</option>
+                                                                    <option value=1>Многострочный текст</option>
+                                                                    <option value=2>Логическое значение</option>
+                                                                    <option value=3>Число</option>
+                                                                    </select>
+                                                                    </td>
+                                                                    <td><button class="btn btn-danger remove" type="button">Удалить</button></td>
+                                                                </tr>`);
             });
 
         $('#columnsTBody').on('click',
@@ -110,7 +110,7 @@
                         validated = false;
                         return false;
                     }
-                })
+                });
 
                 if (validated) {
                     var priceList = {};
@@ -149,20 +149,21 @@
                         rowIndex = 0;
                         $("#columnsTBody").empty();
                         $.each(result,
-                            function (key, val) {
-                                $('#columnsTBody').append(`<tr id="R${++rowIndex}">
+                            function(key, val) {
+                                $("#columnsTBody").append(`<tr R${++rowIndex}">
                                                             <td><p>Колонка №${rowIndex}</p></td>
-                                                            <td><input type="text" id="headerText" value="${val.HeaderText}" class="form-control"></td>
+                                                            <td><input type="text" id="headerText" value="${val
+                                    .HeaderText}" class="form-control"></td>
                                                             <td>
-                                                            <select id="dataTypeSelect" class="form-control">
+                                                            <select id="dataTypeSelect${key}" class="form-control">
                                                             <option value=0>Однострочный текст</option>
                                                             <option value=1>Многострочный текст</option>
                                                             <option value=2>Логическое значение</option>
                                                             <option value=3>Число</option>
-                                                            </select>
-                                                            </td>
-                                                            <td><button class="btn btn-danger remove" type="button">Удалить</button></td>
-                                                        </tr>`);
+                                                            </select></td> <td><button class="btn btn-danger remove" type="button">Удалить</button></td> </tr>`
+                                );
+                                let element = document.getElementById("dataTypeSelect" + key);
+                                element.value = val.DataType;
                             });
                     });
             });
