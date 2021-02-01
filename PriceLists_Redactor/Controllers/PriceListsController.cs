@@ -59,12 +59,15 @@ namespace PriceLists_Redactor.Controllers
             db.PriceLists.Add(priceList);
             db.SaveChanges();
 
-            foreach (Column column in columns)
+            if (columns!=null)
             {
-                column.PriceListId = priceList.Id;
-                db.Columns.Add(column);
+                foreach (Column column in columns)
+                {
+                    column.PriceListId = priceList.Id;
+                    db.Columns.Add(column);
+                }
+                db.SaveChanges();
             }
-            db.SaveChanges();
 
             // т.к. ajax-post запрос то нет смысла использовать RedirectToAction - не среагирует
             return Json(Url.Action("Index", "PriceLists"));
