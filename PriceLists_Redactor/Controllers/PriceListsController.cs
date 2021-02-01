@@ -49,25 +49,6 @@ namespace PriceLists_Redactor.Controllers
             return View(new PriceListAndColumnsViewModel(new PriceList()));
         }
 
-        //POST: PriceLists/Create=
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create(PriceListAndColumnsViewModel priceListAndColumns)
-        {
-            if (ModelState.IsValid)
-            {
-                db.PriceLists.Add(priceListAndColumns.PriceList);
-                foreach (Column column in priceListAndColumns.Columns)
-                {
-                    db.Columns.Add(column);
-                }
-                await db.SaveChangesAsync();
-                return RedirectToAction("Index");
-            }
-
-            return View(priceListAndColumns);
-        }
-
         public JsonResult InsertPriceListAndColumns(PriceList priceList, IEnumerable<Column> columns)
         {
             if (priceList == null)

@@ -132,11 +132,6 @@ namespace PriceLists_Redactor.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> DeleteConfirmed(int id)
         {
-            var itemCells = db.Cells.Where(c => c.ItemId == id);
-            foreach (var cell in itemCells)
-            {
-                db.Cells.Remove(cell);
-            }
             Item item = await db.Items.FindAsync(id);
             db.Items.Remove(item);
             await db.SaveChangesAsync();
