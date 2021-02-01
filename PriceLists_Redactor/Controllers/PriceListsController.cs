@@ -31,7 +31,7 @@ namespace PriceLists_Redactor.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             PriceList priceList = await db.PriceLists.FindAsync(id);
-            IEnumerable<Column> columns = db.Columns.Where(c => c.PriceListId == id);
+            List<Column> columns = db.Columns.Where(c => c.PriceListId == id).ToList();
             IEnumerable<Item> items = db.Items.Where(i => i.PriceListId == id);
             IEnumerable<Cell> cells = db.Cells.Where(c => c.Item.PriceListId == id);
 

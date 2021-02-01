@@ -36,9 +36,24 @@
                 <td>@item.Title</td>
                 @{
                     var itemCells = Model.Cells.Where(c => c.ItemId == item.Id);
+                    int index = 0;
                     foreach (Cell cell in itemCells)
                     {
+                        if (Model.Columns[index].DataType == DataType.Bool)
+                        {
+                            if (cell.Data == "1")
+                            {
+                                <td>Истина</td>
+                            }
+                            else
+                            {
+                                <td>Ложь</td>
+                            }
+                            index++;
+                            continue;
+                        }
                         <td>@cell.Data</td>
+                        index++;
                     }
                 }
             </tr>
