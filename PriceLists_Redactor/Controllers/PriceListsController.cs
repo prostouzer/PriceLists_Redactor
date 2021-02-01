@@ -46,6 +46,10 @@ namespace PriceLists_Redactor.Controllers
         // GET: PriceLists/Create
         public ActionResult Create()
         {
+            // предлагаем юзеру добавить уже имеющиеся наборы колонок в новый прайс лист
+            //SelectList allPriceLists = new SelectList(db.PriceLists.ToList(), "Id", "Name"); ViewBag.AllPriceLists = allPriceLists;
+            var allPriceLists = db.PriceLists.ToList();
+            ViewBag.AllPriceLists = allPriceLists;
             return View(new PriceListAndColumnsViewModel(new PriceList()));
         }
 

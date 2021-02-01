@@ -16,10 +16,10 @@
         </tr>
         <tr>
             <td>
-                <input id = "priceListName", class="form-control" required/>
+                <input id="priceListName" , class="form-control" required />
             </td>
             <td>
-                @Html.ValidationSummary(true, "", new {@class = "text-danger"})
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
             </td>
             <td>
                 <button class="btn btn-success" id="addNewPriceListBtn" type="button">Добавить</button>
@@ -39,6 +39,7 @@
         </tbody>
     </table>
     <button class="btn btn-md btn-primary" id="addNewColumnBtn" type="button">Новая колонка</button>
+    @Html.DropDownList("priceListWithColumns", new SelectList(ViewBag.AllPriceLists, "Id", "Name"), new { @class = "form-control", id = "priceListWithColumnsDropDown" })
 }
 
 <div>
@@ -49,22 +50,23 @@
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
     <script>
+        //добавить новую колонку
         var rowIndex = 0;
         $("#addNewColumnBtn").on('click',
             function () {
                 $('#columnsTBody').append(`<tr id="R${++rowIndex}">
-                                                <td><p>Колонка №${rowIndex}</p></td>
-                                                <td><input type="text" id="headerText" class="form-control"></td>
-                                                <td>
-                                                <select id="dataTypeSelect" class="form-control">
-                                                <option value=0>Однострочный текст</option>
-                                                <option value=1>Многострочный текст</option>
-                                                <option value=2>Логическое значение</option>
-                                                <option value=3>Число</option>
-                                                </select>
-                                                </td>
-                                                <td><button class="btn btn-danger remove" type="button">Удалить</button></td>
-                                            </tr>`);
+                                                    <td><p>Колонка №${rowIndex}</p></td>
+                                                    <td><input type="text" id="headerText" class="form-control"></td>
+                                                    <td>
+                                                    <select id="dataTypeSelect" class="form-control">
+                                                    <option value=0>Однострочный текст</option>
+                                                    <option value=1>Многострочный текст</option>
+                                                    <option value=2>Логическое значение</option>
+                                                    <option value=3>Число</option>
+                                                    </select>
+                                                    </td>
+                                                    <td><button class="btn btn-danger remove" type="button">Удалить</button></td>
+                                                </tr>`);
             });
 
         $('#columnsTBody').on('click',
@@ -73,73 +75,95 @@
 
                 // Все элементы впереди текущей удаляемой строки
                 var child = $(this).closest('tr').nextAll();
-
                 // Проход по всем следующим строкам и изменение их id
                 child.each(function () {
-
                     // Получение id <tr>
                     var id = $(this).attr('id');
-
                     // Получение ячейки с id
                     var index = $(this).children('.row-index').children('p');
-
                     // Извлечение id строки
                     var dig = parseInt(id.substring(1));
-
                     // Изменение ячейки номера строки
                     index.html(`Колонка №${dig - 1}`);
-
                     // Изменение id строки
                     $(this).attr('id', `R${dig - 1}`);
                 });
-
                 // Удаление текущей строки
                 $(this).closest('tr').remove();
-
                 rowIndex--;
             });
     </script>
     <script>
-        $("#addNewPriceListBtn").on('click', function () {
-            var validated = true;
-            if ($.trim($("#priceListName").val()) == '') {
-                alert("Заполните поле названия");
-                validated = false;
-                return false;
-            }
-
-            $("#columnsTBody .form-control").each(function() {
-                if ($.trim($(this).val()) == '') {
-                    alert("Заполните все названия колонок");
+        //добавление прайс-листа
+        $("#addNewPriceListBtn").on('click',
+            function () {
+                var validated = true;
+                if ($.trim($("#priceListName").val()) == '') {
+                    alert("Заполните поле названия");
                     validated = false;
                     return false;
                 }
-            })
 
-            if (validated) {
-                var priceList = {};
-                priceList.Name = ($("#priceListName").val());
-                var columns = new Array();
-                $("#columnsTBody TR").each(function () {
-                    var currentRow = $(this);
-                    var currentRowColumns = {};
-                    currentRowColumns.HeaderText = currentRow.find("#headerText").val();
-                    currentRowColumns.DataType = currentRow.find("#dataTypeSelect").val();
-                    columns.push(currentRowColumns);
-                });
-                var data = JSON.stringify({ priceList: priceList, columns: columns });
-                $.ajax({
-                    type: "POST",
-                    url: "/PriceLists/InsertPriceListAndColumns",
-                    data: data,
-                    contentType: "application/json; charset=utf-8",
-                    dataType: "json",
-                    success: function (data) {
-                        alert("Успех");
-                        window.location.href = data;
+                $("#columnsTBody .form-control").each(function () {
+                    if ($.trim($(this).val()) == '') {
+                        alert("Заполните все названия колонок");
+                        validated = false;
+                        return false;
                     }
-                });
-            }
-        })
+                })
+
+                if (validated) {
+                    var priceList = {};
+                    priceList.Name = ($("#priceListName").val());
+                    var columns = new Array();
+                    $("#columnsTBody TR").each(function () {
+                        var currentRow = $(this);
+                        var currentRowColumns = {};
+                        currentRowColumns.HeaderText = currentRow.find("#headerText").val();
+                        currentRowColumns.DataType = currentRow.find("#dataTypeSelect").val();
+                        columns.push(currentRowColumns);
+                    });
+                    var data = JSON.stringify({ priceList: priceList, columns: columns });
+                    $.ajax({
+                        type: "POST",
+                        url: "/PriceLists/InsertPriceListAndColumns",
+                        data: data,
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+                        success: function (data) {
+                            alert("Успех");
+                            window.location.href = data;
+                        }
+                    });
+                }
+            })
+    </script>
+    <script>
+        //взять колонки из существующего прайс-листа
+        $("#priceListWithColumnsId").on('change',
+            function () {
+                alert("bl");
+                var data = $("#priceListWithColumnsDropDown").val();
+                $.getJSON('GetColumnsOfAPriceList',
+                    { priceListId: data },
+                    function(result) {
+                        $("#columnsTBody").empty();
+                        $.each(result,
+                            function(key, val) {
+                                $('#columnsTBody').append(`<tr id="R${key}">
+                                                    <td><p>Колонка №${key}</p></td>
+                                                    <td><input type="text" id="headerText" class="form-control">${val.HeaderText}</td>
+                                                    <td>
+                                                    <select id="dataTypeSelect" class="form-control">
+                                                    <option value=0} >Однострочный текст</option>
+                                                    <option value=1>Многострочный текст</option>
+                                                    <option value=2>Логическое значение</option>
+                                                    <option value=3>Число</option>
+                                                    </select>
+                                                    </td>
+                                                    <td><button class="btn btn-danger remove" type="button">Удалить</button></td>
+                                                </tr>`);
+                            });
+                    });
     </script>
 }

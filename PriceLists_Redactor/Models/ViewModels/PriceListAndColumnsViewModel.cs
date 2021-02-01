@@ -13,7 +13,7 @@ namespace PriceLists_Redactor.Models.ViewModels
             Columns = new List<Column>();
         }
 
-        // для Edit'а ?
+        // для Edit'а - Без "беспараметрического конструктора" ругается
         public PriceListAndColumnsViewModel()
         {
             PriceList = new PriceList();
