@@ -29,7 +29,6 @@ namespace PriceLists_Redactor.Controllers
         {
             SelectList priceLists = new SelectList(db.PriceLists, "Id", "Name");
             ViewBag.PriceLists = priceLists;
-            //ViewBag.PriceListId = new SelectList(db.PriceLists, "Id", "Name");
             return View();
         }
 
@@ -68,11 +67,6 @@ namespace PriceLists_Redactor.Controllers
 
         public JsonResult InsertItemAndCells(Item item, IEnumerable<Cell> cells)
         {
-            //if (item == null) TODO VALIDATE
-            //{
-            //    item = new Item();
-            //}
-
             db.Items.Add(item);
             db.SaveChanges();
 

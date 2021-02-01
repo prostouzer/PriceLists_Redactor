@@ -4,7 +4,7 @@
     ViewBag.Title = "Create";
 }
 
-<h2>Create</h2>
+<h2>Новый товар</h2>
 
 
 @using (Html.BeginForm())
@@ -33,15 +33,12 @@
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input id="testValid" type="button" value="TEST VALID" />
-                <input id="addNewItemWithCells" type="button" Value="Добавить" />
+                <input id="addNewItemWithCells" type="button" class="btn btn-primary" Value="Добавить"  />
             </div>
         </div>
 
         <table id="cellsTable" class="table">
             <thead id="cellsTHead">
-                <tr>
-                </tr>
             </thead>
             <tbody id="cellsTBody">
             </tbody>
@@ -71,22 +68,21 @@
                                 $("#cellsTHead").append('<th id="' + key + '">' + val.HeaderText + '</th>');
                                 switch (val.DataType) {
                                     case 0: //singleLine
-                                        $("#cellsTBody").append('<td><input class="data" type="text" maxlength="' +
+                                        $("#cellsTBody").append('<td><input id="data" type="text" class="form-control" maxlength="' +
                                             val.DataLength +
                                             '</td>"');
                                         break;
                                     case 1: //multiLine
-                                        $("#cellsTBody").append('<td><input class="data" type="text" maxlength="' +
+                                        $("#cellsTBody").append('<td><input id="data" type="text" class="form-control" maxlength="' +
                                             val.DataLength +
                                             '</td>"');
                                         break;
                                     case 2: //bool
                                         $("#cellsTBody")
-                                            .append(
-                                                '<td><select class="data"> <option value=0>Ложь</option> <option value=1>Истина</option> </select></td>');
+                                            .append('<td><select id="data" class="form-control" > <option value=0>Ложь</option> <option value=1>Истина</option> </select></td>');
                                         break;
                                     case 3: //numeric
-                                        $("#cellsTBody").append('<td><input class="data" type="number" maxlength="' +
+                                        $("#cellsTBody").append('<td><input id="data" type="number" class="form-control"  maxlength="' +
                                             val.DataLength +
                                             '</td>"');
                                         break;
@@ -103,7 +99,7 @@
 
             var cells = new Array();
             $("#cellsTBody td").each(function () {
-                var data = $(this).find(".data").val();
+                var data = $(this).find("#data").val();
                 var cell = {};
                 cell.Data = data;
                 cells.push(cell);
