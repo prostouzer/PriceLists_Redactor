@@ -107,7 +107,7 @@ namespace PriceLists_Redactor.Controllers
                     db.Entry(column).State = EntityState.Modified;
                 }
                 await db.SaveChangesAsync();
-                return Json(Url.Action("Index", "PriceLists"));
+                return RedirectToAction("Index");
             }
 
             priceListAndColumns.Columns = db.Columns.Where(c => c.PriceListId == priceListAndColumns.PriceList.Id).ToList();
