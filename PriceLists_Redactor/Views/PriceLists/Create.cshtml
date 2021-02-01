@@ -2,10 +2,10 @@
 @model PriceLists_Redactor.Models.ViewModels.PriceListAndColumnsViewModel
 
 @{
-    ViewBag.Title = "Create";
+    ViewBag.Title = "Новый прайс-лист";
 }
 
-<h2>Добавить новый прайс-лист</h2>
+<h2>Новый прайс-лист</h2>
 
 @using (Html.BeginForm())
 {
@@ -13,12 +13,15 @@
 
     <table>
         <tr>
+            <th>Название</th>
+        </tr>
+        <tr>
             <td>
-                @Html.EditorFor(model => model.PriceList.Name, new { htmlAttributes = new { @class = "form-control", id = "priceListName" } })
-                @Html.ValidationMessageFor(model => model.PriceList.Name, "", new { @class = "text-danger" })
+                @Html.EditorFor(model => model.PriceList.Name, new {htmlAttributes = new {@class = "form-control", id = "priceListName"}})
+                @Html.ValidationMessageFor(model => model.PriceList.Name, "", new {@class = "text-danger"})
             </td>
             <td>
-                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                @Html.ValidationSummary(true, "", new {@class = "text-danger"})
             </td>
             <td>
                 <button class="btn btn-default" id="addNewPriceListBtn" type="button">Добавить</button>
@@ -30,7 +33,7 @@
         <thead>
             <tr>
                 <th>№ колонки</th>
-                <th>Данные</th>
+                <th>Название колонки</th>
                 <th>Тип данных</th>
             </tr>
         </thead>
@@ -53,9 +56,9 @@
             function () {
                 $('#columnsTBody').append(`<tr id="R${++rowIndex}">
                                                 <td><p>Колонка №${rowIndex}</p></td>
-                                                <td><input type="text" class="headerText"></td>
+                                                <td><input type="text" id="headerText" class="form-control"></td>
                                                 <td>
-                                                <select class="dataTypeSelect">
+                                                <select id="dataTypeSelect" class="form-control">
                                                 <option value=0>Однострочный текст</option>
                                                 <option value=1>Многострочный текст</option>
                                                 <option value=2>Логическое значение</option>
@@ -107,8 +110,8 @@
             $("#columnsTBody TR").each(function() {
                 var currentRow = $(this);
                 var currentRowColumns = {};
-                currentRowColumns.HeaderText = currentRow.find(".headerText").val();
-                currentRowColumns.DataType = currentRow.find(".dataTypeSelect").val();
+                currentRowColumns.HeaderText = currentRow.find("#headerText").val();
+                currentRowColumns.DataType = currentRow.find("#dataTypeSelect").val();
                 columns.push(currentRowColumns);
             });
 
