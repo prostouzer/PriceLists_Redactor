@@ -32,7 +32,7 @@
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input id="addNewItemWithCells" type="button" class="btn btn-primary" Value="Добавить" />
+                <input id="addNewItemWithCells" type="button" class="btn btn-success" Value="Добавить" />
             </div>
         </div>
 
@@ -64,25 +64,25 @@
                         function (key, val) {
                             $("#cellsTHead").append('<th id="' + key + '">' + val.HeaderText + '</th>');
                             switch (val.DataType) {
-                                case 0: //singleLine
-                                    $("#cellsTBody").append('<td><input id="data" type="text" class="form-control" maxlength="' +
-                                        val.DataLength +
-                                        '</td>"');
-                                    break;
-                                case 1: //multiLine
-                                    $("#cellsTBody").append('<td><input id="data" type="text" class="form-control" maxlength="' +
-                                        val.DataLength +
-                                        '</td>"');
-                                    break;
-                                case 2: //bool
-                                    $("#cellsTBody")
-                                        .append('<td><select id="data" class="form-control" > <option value=0>Ложь</option> <option value=1>Истина</option> </select></td>');
-                                    break;
-                                case 3: //numeric
-                                    $("#cellsTBody").append('<td><input id="data" type="number" class="form-control"  maxlength="' +
-                                        val.DataLength +
-                                        '</td>"');
-                                    break;
+                            case 0: //singleLine
+                                $("#cellsTBody").append('<td><input id="data" type="text" class="form-control" maxlength="' +
+                                    val.DataLength +
+                                    '</td>"');
+                                break;
+                            case 1: //multiLine
+                                $("#cellsTBody").append('<td><input id="data" type="text" class="form-control" maxlength="' +
+                                    val.DataLength +
+                                    '</td>"');
+                                break;
+                            case 2: //bool
+                                $("#cellsTBody")
+                                    .append('<td><select id="data" class="form-control" > <option value=0>Ложь</option> <option value=1>Истина</option> </select></td>');
+                                break;
+                            case 3: //numeric
+                                $("#cellsTBody").append('<td><input id="data" type="number" class="form-control"  maxlength="' +
+                                    val.DataLength +
+                                    '</td>"');
+                                break;
                             };
                         });
                 });
@@ -92,30 +92,47 @@
     </script>
     <script>
         $("#addNewItemWithCells").on('click', function () {
-            var item = {};
-            item.PriceListId = ($("#priceListDropDown").val());
-            item.Title = ($("#itemName").val());
+            var validated = true;
 
-            var cells = new Array();
-            $("#cellsTBody td").each(function () {
-                var data = $(this).find("#data").val();
-                var cell = {};
-                cell.Data = data;
-                cells.push(cell);
-            });
+            if ($.trim($("#itemName").val()) == '') {
+                alert("Заполните поле названия");
+                validated = false;
+                return false;
+            }
 
-            var data = JSON.stringify({ item: item, cells: cells });
-            $.ajax({
-                type: "POST",
-                url: "/Items/InsertItemAndCells",
-                data: data,
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                success: function (data) {
-                    alert("Успех");
-                    window.location.href = data;
+            $("#cellsTBody .form-control").each(function () {
+                if ($.trim($(this).val()) == '') {
+                    alert("Заполните все ячейки");
+                    validated = false;
+                    return false;
                 }
-            });
+            })
+
+            if (validated) {
+                var item = {};
+                item.PriceListId = ($("#priceListDropDown").val());
+                item.Title = ($("#itemName").val());
+                var cells = new Array();
+                $("#cellsTBody td").each(function () {
+                    var data = $(this).find("#data").val();
+                    var cell = {};
+                    cell.Data = data;
+                    cells.push(cell);
+                });
+                var data = JSON.stringify({ item: item, cells: cells });
+                $.ajax({
+                    type: "POST",
+                    url: "/Items/InsertItemAndCells",
+                    data: data,
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (data) {
+                        alert("Успех");
+                        window.location.href = data;
+                    }
+                });
+            }
+            
         })
     </script>
 }
