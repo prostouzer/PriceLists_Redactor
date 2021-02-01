@@ -15,7 +15,7 @@
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <div class="form-group">
-            @Html.LabelFor(model => model.Item.Title, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.Item.Title, "Название", new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.Item.Title, new { htmlAttributes = new { @class = "form-control", id = "itemName" } })
                 @Html.ValidationMessageFor(model => model.Item.Title, "", new { @class = "text-danger" })
@@ -23,16 +23,16 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Item.PriceListId, "PriceListId", htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.Item.PriceListId, "Прайс-лист", new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownListFor(model => model.Item.PriceListId, ViewBag.PriceLists as SelectList, htmlAttributes: new { @class = "form-control", id = "priceListDropDown" })
+                @Html.DropDownListFor(model => model.Item.PriceListId, ViewBag.PriceLists as SelectList, new { @class = "form-control", id = "priceListDropDown" })
                 @Html.ValidationMessageFor(model => model.Item.PriceListId, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input id="addNewItemWithCells" type="button" class="btn btn-primary" Value="Добавить"  />
+                <input id="addNewItemWithCells" type="button" class="btn btn-primary" Value="Добавить" />
             </div>
         </div>
 
@@ -53,42 +53,42 @@
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
     <script>
-        $("#priceListDropDown").on('change',
-            function () {
-                var data = $("#priceListDropDown").val();
-                $.getJSON('GetColumnsOfAPriceList',
-                    { priceListId: data },
-                    function (result) {
-                        var items = [];
-                        $("#cellsTHead").empty();
-                        $("#cellsTBody").empty();
-                        $.each(result,
-                            function (key, val) {
-                                $("#cellsTHead").append('<th id="' + key + '">' + val.HeaderText + '</th>');
-                                switch (val.DataType) {
-                                    case 0: //singleLine
-                                        $("#cellsTBody").append('<td><input id="data" type="text" class="form-control" maxlength="' +
-                                            val.DataLength +
-                                            '</td>"');
-                                        break;
-                                    case 1: //multiLine
-                                        $("#cellsTBody").append('<td><input id="data" type="text" class="form-control" maxlength="' +
-                                            val.DataLength +
-                                            '</td>"');
-                                        break;
-                                    case 2: //bool
-                                        $("#cellsTBody")
-                                            .append('<td><select id="data" class="form-control" > <option value=0>Ложь</option> <option value=1>Истина</option> </select></td>');
-                                        break;
-                                    case 3: //numeric
-                                        $("#cellsTBody").append('<td><input id="data" type="number" class="form-control"  maxlength="' +
-                                            val.DataLength +
-                                            '</td>"');
-                                        break;
-                                };
-                            });
-                    });
-            });
+        var getCells = function () {
+            var data = $("#priceListDropDown").val();
+            $.getJSON('GetColumnsOfAPriceList',
+                { priceListId: data },
+                function (result) {
+                    $("#cellsTHead").empty();
+                    $("#cellsTBody").empty();
+                    $.each(result,
+                        function (key, val) {
+                            $("#cellsTHead").append('<th id="' + key + '">' + val.HeaderText + '</th>');
+                            switch (val.DataType) {
+                                case 0: //singleLine
+                                    $("#cellsTBody").append('<td><input id="data" type="text" class="form-control" maxlength="' +
+                                        val.DataLength +
+                                        '</td>"');
+                                    break;
+                                case 1: //multiLine
+                                    $("#cellsTBody").append('<td><input id="data" type="text" class="form-control" maxlength="' +
+                                        val.DataLength +
+                                        '</td>"');
+                                    break;
+                                case 2: //bool
+                                    $("#cellsTBody")
+                                        .append('<td><select id="data" class="form-control" > <option value=0>Ложь</option> <option value=1>Истина</option> </select></td>');
+                                    break;
+                                case 3: //numeric
+                                    $("#cellsTBody").append('<td><input id="data" type="number" class="form-control"  maxlength="' +
+                                        val.DataLength +
+                                        '</td>"');
+                                    break;
+                            };
+                        });
+                });
+        }
+        $("#priceListDropDown").on('change', getCells);
+        $(document).ready(getCells);
     </script>
     <script>
         $("#addNewItemWithCells").on('click', function () {

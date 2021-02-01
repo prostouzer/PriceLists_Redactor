@@ -4,15 +4,13 @@
     ViewBag.Title = "Delete";
 }
 
-<h2>Delete</h2>
+<h2>Удаление товара</h2>
 
-<h3>Are you sure you want to delete this?</h3>
+<h3>Вы действительно хотите удалить этот товар?</h3>
 <div>
-    <h4>Item</h4>
-    <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.PriceList.Name)
+            Прайс-лист
         </dt>
 
         <dd>
@@ -20,21 +18,20 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Title)
+            Название
         </dt>
 
         <dd>
             @Html.DisplayFor(model => model.Title)
         </dd>
-
     </dl>
 
     @using (Html.BeginForm()) {
         @Html.AntiForgeryToken()
 
         <div class="form-actions no-color">
-            <input type="submit" value="Delete" class="btn btn-default" /> |
-            @Html.ActionLink("Back to List", "Index")
+            <input type="submit" value="Удалить" class="btn btn-danger" /> |
+            @Html.ActionLink("Вернуться", "Index")
         </div>
     }
 </div>
