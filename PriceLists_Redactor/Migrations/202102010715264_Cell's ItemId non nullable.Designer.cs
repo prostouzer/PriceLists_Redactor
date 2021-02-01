@@ -7,13 +7,13 @@ namespace PriceLists_Redactor.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class NullableFKsforCellclass : IMigrationMetadata
+    public sealed partial class CellsItemIdnonnullable : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(NullableFKsforCellclass));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(CellsItemIdnonnullable));
         
         string IMigrationMetadata.Id
         {
-            get { return "202101290516312_Nullable FKs for Cell class"; }
+            get { return "202102010715264_Cell's ItemId non nullable"; }
         }
         
         string IMigrationMetadata.Source

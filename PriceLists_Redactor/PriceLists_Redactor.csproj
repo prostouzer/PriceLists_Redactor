@@ -179,21 +179,9 @@
     <Compile Include="Migrations\202101281121597_column foreignKey.Designer.cs">
       <DependentUpon>202101281121597_column foreignKey.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\202101290516312_Nullable FKs for Cell class.cs" />
-    <Compile Include="Migrations\202101290516312_Nullable FKs for Cell class.Designer.cs">
-      <DependentUpon>202101290516312_Nullable FKs for Cell class.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202101300906429_added required attributes to models.cs" />
-    <Compile Include="Migrations\202101300906429_added required attributes to models.Designer.cs">
-      <DependentUpon>202101300906429_added required attributes to models.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202101300928574_Cell only ColumnId nullable.cs" />
-    <Compile Include="Migrations\202101300928574_Cell only ColumnId nullable.Designer.cs">
-      <DependentUpon>202101300928574_Cell only ColumnId nullable.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202102010620386_Removed Column properties from Cell.cs" />
-    <Compile Include="Migrations\202102010620386_Removed Column properties from Cell.Designer.cs">
-      <DependentUpon>202102010620386_Removed Column properties from Cell.cs</DependentUpon>
+    <Compile Include="Migrations\202102010715264_Cell%27s ItemId non nullable.cs" />
+    <Compile Include="Migrations\202102010715264_Cell%27s ItemId non nullable.Designer.cs">
+      <DependentUpon>202102010715264_Cell%27s ItemId non nullable.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Cell.cs" />
@@ -310,17 +298,8 @@
     <EmbeddedResource Include="Migrations\202101281121597_column foreignKey.resx">
       <DependentUpon>202101281121597_column foreignKey.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202101290516312_Nullable FKs for Cell class.resx">
-      <DependentUpon>202101290516312_Nullable FKs for Cell class.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202101300906429_added required attributes to models.resx">
-      <DependentUpon>202101300906429_added required attributes to models.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202101300928574_Cell only ColumnId nullable.resx">
-      <DependentUpon>202101300928574_Cell only ColumnId nullable.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202102010620386_Removed Column properties from Cell.resx">
-      <DependentUpon>202102010620386_Removed Column properties from Cell.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202102010715264_Cell%27s ItemId non nullable.resx">
+      <DependentUpon>202102010715264_Cell%27s ItemId non nullable.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
