@@ -191,9 +191,9 @@
     <Compile Include="Migrations\202101300928574_Cell only ColumnId nullable.Designer.cs">
       <DependentUpon>202101300928574_Cell only ColumnId nullable.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\202101301021196_Nullable Cell FKs.cs" />
-    <Compile Include="Migrations\202101301021196_Nullable Cell FKs.Designer.cs">
-      <DependentUpon>202101301021196_Nullable Cell FKs.cs</DependentUpon>
+    <Compile Include="Migrations\202102010620386_Removed Column properties from Cell.cs" />
+    <Compile Include="Migrations\202102010620386_Removed Column properties from Cell.Designer.cs">
+      <DependentUpon>202102010620386_Removed Column properties from Cell.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Cell.cs" />
@@ -319,8 +319,8 @@
     <EmbeddedResource Include="Migrations\202101300928574_Cell only ColumnId nullable.resx">
       <DependentUpon>202101300928574_Cell only ColumnId nullable.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202101301021196_Nullable Cell FKs.resx">
-      <DependentUpon>202101301021196_Nullable Cell FKs.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202102010620386_Removed Column properties from Cell.resx">
+      <DependentUpon>202102010620386_Removed Column properties from Cell.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
