@@ -73,12 +73,12 @@
                                     case 0: //singleLine
                                         $("#cellsTBody").append('<td><input class="data" type="text" maxlength="' +
                                             val.DataLength +
-                                            '"</td>"');
+                                            '</td>"');
                                         break;
                                     case 1: //multiLine
                                         $("#cellsTBody").append('<td><input class="data" type="text" maxlength="' +
                                             val.DataLength +
-                                            '"</td>"');
+                                            '</td>"');
                                         break;
                                     case 2: //bool
                                         $("#cellsTBody")
@@ -88,7 +88,7 @@
                                     case 3: //numeric
                                         $("#cellsTBody").append('<td><input class="data" type="number" maxlength="' +
                                             val.DataLength +
-                                            '"</td>"');
+                                            '</td>"');
                                         break;
                                 };
                             });
@@ -102,18 +102,12 @@
             item.Title = ($("#itemName").val());
 
             var cells = new Array();
-            $("#cellsTBody TR").each(function () {
-                var currentRow = $(this);
-                var currentRowColumns = {};
-                currentRowColumns.Data = currentRow.find(".data").val();
-                cells.push(currentRowColumns);
+            $("#cellsTBody td").each(function () {
+                var data = $(this).find(".data").val();
+                var cell = {};
+                cell.Data = data;
+                cells.push(cell);
             });
-            //$("#cellsTBody TR TD").each(function () {
-            //    var currentTD = $(this);
-            //    var currentCell = {};
-            //    currentCell.Data = currentTD.val();
-            //    cells.Push(currentCell);
-            //});
 
             var data = JSON.stringify({ item: item, cells: cells });
             $.ajax({
