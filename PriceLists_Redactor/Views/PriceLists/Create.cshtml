@@ -53,30 +53,30 @@
         //добавить новую колонку
         var rowIndex = 0;
         $("#addNewColumnBtn").on('click',
-            function () {
+            function() {
                 $('#columnsTBody').append(`<tr id="R${++rowIndex}">
-                                                    <td><p>Колонка №${rowIndex}</p></td>
-                                                    <td><input type="text" id="headerText" class="form-control"></td>
-                                                    <td>
-                                                    <select id="dataTypeSelect" class="form-control">
-                                                    <option value=0>Однострочный текст</option>
-                                                    <option value=1>Многострочный текст</option>
-                                                    <option value=2>Логическое значение</option>
-                                                    <option value=3>Число</option>
-                                                    </select>
-                                                    </td>
-                                                    <td><button class="btn btn-danger remove" type="button">Удалить</button></td>
-                                                </tr>`);
+                                                            <td><p>Колонка №${rowIndex}</p></td>
+                                                            <td><input type="text" id="headerText" class="form-control"></td>
+                                                            <td>
+                                                            <select id="dataTypeSelect" class="form-control">
+                                                            <option value=0>Однострочный текст</option>
+                                                            <option value=1>Многострочный текст</option>
+                                                            <option value=2>Логическое значение</option>
+                                                            <option value=3>Число</option>
+                                                            </select>
+                                                            </td>
+                                                            <td><button class="btn btn-danger remove" type="button">Удалить</button></td>
+                                                        </tr>`);
             });
 
         $('#columnsTBody').on('click',
             '.remove',
-            function () {
+            function() {
 
                 // Все элементы впереди текущей удаляемой строки
                 var child = $(this).closest('tr').nextAll();
                 // Проход по всем следующим строкам и изменение их id
-                child.each(function () {
+                child.each(function() {
                     // Получение id <tr>
                     var id = $(this).attr('id');
                     // Получение ячейки с id
@@ -96,7 +96,7 @@
     <script>
         //добавление прайс-листа
         $("#addNewPriceListBtn").on('click',
-            function () {
+            function() {
                 var validated = true;
                 if ($.trim($("#priceListName").val()) == '') {
                     alert("Заполните поле названия");
@@ -104,7 +104,7 @@
                     return false;
                 }
 
-                $("#columnsTBody .form-control").each(function () {
+                $("#columnsTBody .form-control").each(function() {
                     if ($.trim($(this).val()) == '') {
                         alert("Заполните все названия колонок");
                         validated = false;
@@ -116,7 +116,7 @@
                     var priceList = {};
                     priceList.Name = ($("#priceListName").val());
                     var columns = new Array();
-                    $("#columnsTBody TR").each(function () {
+                    $("#columnsTBody TR").each(function() {
                         var currentRow = $(this);
                         var currentRowColumns = {};
                         currentRowColumns.HeaderText = currentRow.find("#headerText").val();
@@ -130,7 +130,7 @@
                         data: data,
                         contentType: "application/json; charset=utf-8",
                         dataType: "json",
-                        success: function (data) {
+                        success: function(data) {
                             alert("Успех");
                             window.location.href = data;
                         }
@@ -140,30 +140,31 @@
     </script>
     <script>
         //взять колонки из существующего прайс-листа
-        $("#priceListWithColumnsId").on('change',
-            function () {
-                alert("bl");
+        $("#priceListWithColumnsDropDown").on('change',
+            function() {
                 var data = $("#priceListWithColumnsDropDown").val();
-                $.getJSON('GetColumnsOfAPriceList',
+                $.getJSON('/Items/GetColumnsOfAPriceList',
                     { priceListId: data },
                     function(result) {
+                        rowIndex = 0;
                         $("#columnsTBody").empty();
                         $.each(result,
-                            function(key, val) {
-                                $('#columnsTBody').append(`<tr id="R${key}">
-                                                    <td><p>Колонка №${key}</p></td>
-                                                    <td><input type="text" id="headerText" class="form-control">${val.HeaderText}</td>
-                                                    <td>
-                                                    <select id="dataTypeSelect" class="form-control">
-                                                    <option value=0} >Однострочный текст</option>
-                                                    <option value=1>Многострочный текст</option>
-                                                    <option value=2>Логическое значение</option>
-                                                    <option value=3>Число</option>
-                                                    </select>
-                                                    </td>
-                                                    <td><button class="btn btn-danger remove" type="button">Удалить</button></td>
-                                                </tr>`);
+                            function (key, val) {
+                                $('#columnsTBody').append(`<tr id="R${++rowIndex}">
+                                                            <td><p>Колонка №${rowIndex}</p></td>
+                                                            <td><input type="text" id="headerText" value="${val.HeaderText}" class="form-control"></td>
+                                                            <td>
+                                                            <select id="dataTypeSelect" class="form-control">
+                                                            <option value=0>Однострочный текст</option>
+                                                            <option value=1>Многострочный текст</option>
+                                                            <option value=2>Логическое значение</option>
+                                                            <option value=3>Число</option>
+                                                            </select>
+                                                            </td>
+                                                            <td><button class="btn btn-danger remove" type="button">Удалить</button></td>
+                                                        </tr>`);
                             });
                     });
+            });
     </script>
 }
