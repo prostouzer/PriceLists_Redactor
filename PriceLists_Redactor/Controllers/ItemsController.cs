@@ -123,6 +123,20 @@ namespace PriceLists_Redactor.Controllers
             return View(itemAndCells);
         }
 
+        public JsonResult UpdateItemAndCells(Item item, IEnumerable<Cell> cells)
+        {
+            db.Entry(item).State = EntityState.Modified;
+
+            foreach (Cell cell in cells)
+            {
+                db.Entry(cell).State = EntityState.Modified;
+            }
+            db.SaveChanges();
+
+            // т.к. ajax-post запрос то нет смысла использовать RedirectToAction - не среагирует
+            return Json(Url.Action("Index", "Items"));
+        }
+
         // GET: Items/Delete/5
         public async Task<ActionResult> Delete(int? id)
         {

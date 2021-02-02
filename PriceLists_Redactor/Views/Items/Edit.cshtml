@@ -35,7 +35,7 @@
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-success" />
+                <input id="updateItemAndCells" type="button" value="Save" class="btn btn-success" />
             </div>
         </div>
 
@@ -43,9 +43,6 @@
             <thead id="cellsTHead">
             </thead>
             <tbody id="cellsTBody">
-                @foreach (Cell cell in Model.Cells)
-                {
-                }
             </tbody>
         </table>
     </div>
@@ -74,19 +71,16 @@
                                 switch (val.DataType) {
                                     case 0: //singleLine
                                         $("#cellsTBody").append(
-                                            `<td><input id="data${key}" type="text" class="form-control" maxlength=${val
-                                                .DataLength} value="${model.Cells[key].Data}"> </td>`);
+                                            `<td><input id="data${key}" type="text" class="form-control" maxlength=${val.DataLength} value="${model.Cells[key].Data}"> </td>`);
                                         break;
                                     case 1: //multiLine
                                         $("#cellsTBody").append(
-                                            `<td><input id="data${key}" type="text" class="form-control" maxlength=${val
-                                                .DataLength} value="${model.Cells[key].Data}"> </td>`);
+                                            `<td><input id="data${key}" type="text" class="form-control" maxlength=${val.DataLength} value="${model.Cells[key].Data}"> </td>`);
                                         break;
                                     case 2: //bool
                                         $("#cellsTBody").append(
                                             `<td>
-                                            <select id="data${key
-                                            }" class="form-control" ><option value=0>Ложь</option> <option value=1>Истина</option> </select>
+                                            <select id="data${key}" class="form-control" ><option value=0>Ложь</option> <option value=1>Истина</option> </select>
                                         </td>`);
                                         // установка изначального bool значения
                                         var element = document.getElementById(`data${key}`);
@@ -94,8 +88,7 @@
                                         break;
                                     case 3: //numeric
                                         $("#cellsTBody").append(
-                                            `<td><input id="data${key}" type="number" class="form-control" maxlength=${val
-                                            .DataLength} value="${model.Cells[key].Data}"> </td>`);
+                                            `<td><input id="data${key}" type="number" class="form-control" maxlength=${val.DataLength} value="${model.Cells[key].Data}"> </td>`);
                                         break;
                                 }
                             });
@@ -115,28 +108,24 @@
                             function(key, val) {
                                 $("#cellsTHead").append('<th id="' + key + '">' + val.HeaderText + '</th>');
                                 switch (val.DataType) {
-                                case 0: //singleLine
-                                    $("#cellsTBody").append(
-                                        '<td><input id="data" type="text" class="form-control" maxlength="' +
-                                        val.DataLength +
-                                        '</td>"');
+                                    case 0: //singleLine
+                                        $("#cellsTBody").append(
+                                            `<td><input id="data${key}" type="text" class="form-control" maxlength=${val.DataLength}"> </td>`);
                                     break;
                                 case 1: //multiLine
                                     $("#cellsTBody").append(
-                                        '<td><input id="data" type="text" class="form-control" maxlength="' +
-                                        val.DataLength +
-                                        '</td>"');
+                                        `<td><input id="data${key}" type="text" class="form-control" maxlength=${val.DataLength}"> </td>`);
                                     break;
                                 case 2: //bool
                                     $("#cellsTBody")
                                         .append(
-                                            '<td><select id="data" class="form-control" > <option value=0>Ложь</option> <option value=1>Истина</option> </select></td>');
+                                            `<td>
+                                            <select id="data${key}" class="form-control" ><option value=0>Ложь</option> <option value=1>Истина</option> </select>
+                                        </td>`);
                                     break;
                                 case 3: //numeric
                                     $("#cellsTBody").append(
-                                        '<td><input id="data" type="number" class="form-control"  maxlength="' +
-                                        val.DataLength +
-                                        '</td>"');
+                                        `<td><input id="data${key}" type="text" class="form-control" maxlength=${val.DataLength}"> </td>`);
                                     break;
                                 };
                             });
