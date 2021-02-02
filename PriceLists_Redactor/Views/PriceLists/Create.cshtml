@@ -22,24 +22,28 @@
                 @Html.ValidationSummary(true, "", new { @class = "text-danger" })
             </td>
             <td>
-                <button class="btn btn-success" id="addNewPriceListBtn" type="button">Добавить</button>
+                <button id="addNewPriceListBtn" class="btn btn-success" type="button">Добавить</button>
             </td>
-        </tr>
+            </tr>
     </table>
 
     <table class="table" align="center">
         <thead>
-            <tr>
-                <th>№ колонки</th>
-                <th>Название колонки</th>
-                <th>Тип данных</th>
-            </tr>
+        <tr>
+            <th>№ колонки</th>
+            <th>Название колонки</th>
+            <th>Тип данных</th>
+        </tr>
         </thead>
         <tbody id="columnsTBody">
         </tbody>
     </table>
-    <button class="btn btn-md btn-primary" id="addNewColumnBtn" type="button">Новая колонка</button>
-    @Html.DropDownList("priceListWithColumns", new SelectList(ViewBag.AllPriceLists, "Id", "Name"), new { @class = "form-control", id = "priceListWithColumnsDropDown" })
+    <table>
+        <tr>
+            <td><button class="btn btn-md btn-primary" id="addNewColumnBtn" type="button">Новая колонка</button></td>
+            <td>@Html.DropDownList("priceListWithColumns", new SelectList(ViewBag.AllPriceLists, "Id", "Name"),"Взять колонки из...", new { @class = "form-control", id = "priceListWithColumnsDropDown" })</td>
+        </tr>
+    </table>
 }
 
 <div>
@@ -53,30 +57,29 @@
         //добавить новую колонку
         var rowIndex = 0;
         $("#addNewColumnBtn").on('click',
-            function() {
+            function () {
                 $('#columnsTBody').append(`<tr id="R${++rowIndex}">
-                                                                    <td><p>Колонка №${rowIndex}</p></td>
-                                                                    <td><input type="text" id="headerText" class="form-control"></td>
-                                                                    <td>
-                                                                    <select id="dataTypeSelect" class="form-control">
-                                                                    <option value=0>Однострочный текст</option>
-                                                                    <option value=1>Многострочный текст</option>
-                                                                    <option value=2>Логическое значение</option>
-                                                                    <option value=3>Число</option>
-                                                                    </select>
-                                                                    </td>
-                                                                    <td><button class="btn btn-danger remove" type="button">Удалить</button></td>
-                                                                </tr>`);
+                                                                        <td><p>Колонка №${rowIndex}</p></td>
+                                                                        <td><input type="text" id="headerText" class="form-control"></td>
+                                                                        <td>
+                                                                        <select id="dataTypeSelect" class="form-control">
+                                                                        <option value=0>Однострочный текст</option>
+                                                                        <option value=1>Многострочный текст</option>
+                                                                        <option value=2>Логическое значение</option>
+                                                                        <option value=3>Число</option>
+                                                                        </select>
+                                                                        </td>
+                                                                        <td><button class="btn btn-danger remove" type="button">Удалить</button></td>
+                                                                    </tr>`);
             });
 
         $('#columnsTBody').on('click',
             '.remove',
-            function() {
-
+            function () {
                 // Все элементы впереди текущей удаляемой строки
                 var child = $(this).closest('tr').nextAll();
                 // Проход по всем следующим строкам и изменение их id
-                child.each(function() {
+                child.each(function () {
                     // Получение id <tr>
                     var id = $(this).attr('id');
                     // Получение ячейки с id
@@ -96,7 +99,7 @@
     <script>
         //добавление прайс-листа
         $("#addNewPriceListBtn").on('click',
-            function() {
+            function () {
                 var validated = true;
                 if ($.trim($("#priceListName").val()) == '') {
                     alert("Заполните поле названия");
@@ -104,7 +107,7 @@
                     return false;
                 }
 
-                $("#columnsTBody .form-control").each(function() {
+                $("#columnsTBody .form-control").each(function () {
                     if ($.trim($(this).val()) == '') {
                         alert("Заполните все названия колонок");
                         validated = false;
@@ -116,7 +119,7 @@
                     var priceList = {};
                     priceList.Name = ($("#priceListName").val());
                     var columns = new Array();
-                    $("#columnsTBody TR").each(function() {
+                    $("#columnsTBody TR").each(function () {
                         var currentRow = $(this);
                         var currentRowColumns = {};
                         currentRowColumns.HeaderText = currentRow.find("#headerText").val();
@@ -130,7 +133,7 @@
                         data: data,
                         contentType: "application/json; charset=utf-8",
                         dataType: "json",
-                        success: function(data) {
+                        success: function (data) {
                             alert("Успех");
                             window.location.href = data;
                         }
@@ -140,32 +143,32 @@
     </script>
     <script>
         //взять колонки из существующего прайс-листа
-        $("#priceListWithColumnsDropDown").on('change',
-            function() {
-                var data = $("#priceListWithColumnsDropDown").val();
-                $.getJSON('/Items/GetColumnsOfAPriceList',
-                    { priceListId: data },
-                    function(result) {
-                        rowIndex = 0;
-                        $("#columnsTBody").empty();
-                        $.each(result,
-                            function(key, val) {
-                                $("#columnsTBody").append(`<tr id=R${++rowIndex}">
-                                                            <td><p>Колонка №${rowIndex}</p></td>
-                                                            <td><input type="text" id="headerText" value="${val
+        var getColumns = function () {
+            var data = $("#priceListWithColumnsDropDown").val();
+            $.getJSON('/Items/GetColumnsOfAPriceList',
+                { priceListId: data },
+                function (result) {
+                    rowIndex = 0;
+                    $("#columnsTBody").empty();
+                    $.each(result,
+                        function (key, val) {
+                            $("#columnsTBody").append(`<tr id=R${++rowIndex}">
+                                                                <td><p>Колонка №${rowIndex}</p></td>
+                                                                <td><input type="text" id="headerText" value="${val
                                     .HeaderText}" class="form-control"></td>
-                                                            <td>
-                                                            <select id="dataTypeSelect${key}" class="form-control">
-                                                            <option value=0>Однострочный текст</option>
-                                                            <option value=1>Многострочный текст</option>
-                                                            <option value=2>Логическое значение</option>
-                                                            <option value=3>Число</option>
-                                                            </select></td> <td><button class="btn btn-danger remove" type="button">Удалить</button></td> </tr>`
-                                );
-                                let element = document.getElementById("dataTypeSelect" + key);
-                                element.value = val.DataType;
-                            });
-                    });
-            });
+                                                                <td>
+                                                                <select id="dataTypeSelect${key}" class="form-control">
+                                                                <option value=0>Однострочный текст</option>
+                                                                <option value=1>Многострочный текст</option>
+                                                                <option value=2>Логическое значение</option>
+                                                                <option value=3>Число</option>
+                                                                </select></td> <td><button class="btn btn-danger remove" type="button">Удалить</button></td> </tr>`
+                            );
+                            let element = document.getElementById("dataTypeSelect" + key);
+                            element.value = val.DataType;
+                        });
+                });
+        }
+        $("#priceListWithColumnsDropDown").on('change', getColumns);
     </script>
 }
