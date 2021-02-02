@@ -35,7 +35,7 @@
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-default" />
+                <input type="submit" value="Save" class="btn btn-success" />
             </div>
         </div>
 
@@ -90,16 +90,12 @@
                                         </td>`);
                                         // установка изначального bool значения
                                         var element = document.getElementById(`data${key}`);
-                                        element.value = val.Data;
+                                        element.value = model.Cells[key].Data;
                                         break;
                                     case 3: //numeric
                                         $("#cellsTBody").append(
-                                            `<td><input id="data${key}" type="number" class="form-control" maxlength=` +
-                                            val.DataLength +
-                                            ` value="` +
-                                            model.Cells[key].Data +
-                                            `" ` +
-                                            `</td>`);
+                                            `<td><input id="data${key}" type="number" class="form-control" maxlength=${val
+                                            .DataLength} value="${model.Cells[key].Data}"> </td>`);
                                         break;
                                 }
                             });
