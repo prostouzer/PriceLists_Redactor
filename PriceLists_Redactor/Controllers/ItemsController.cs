@@ -137,6 +137,26 @@ namespace PriceLists_Redactor.Controllers
             return Json(Url.Action("Index", "Items"));
         }
 
+        public JsonResult UpdateItemInsertCells(Item item, IEnumerable<Cell> newCells)
+        {
+            db.Entry(item).State = EntityState.Modified;
+
+            var oldCells = db.Cells.Where(c => c.ItemId == item.Id);
+            foreach (Cell cell in oldCells)
+            {
+                db.Cells.Remove(cell);
+            }
+
+            foreach (Cell cell in newCells)
+            {
+                db.Cells.Add(cell);
+            }
+            db.SaveChanges();
+
+            // т.к. ajax-post запрос то нет смысла использовать RedirectToAction - не среагирует
+            return Json(Url.Action("Index", "Items"));
+        }
+
         // GET: Items/Delete/5
         public async Task<ActionResult> Delete(int? id)
         {

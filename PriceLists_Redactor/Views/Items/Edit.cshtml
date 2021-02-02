@@ -54,11 +54,11 @@
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
-    <script>
-
+<script>
+    var model = @Html.Raw(Json.Encode(Model)); // надо взять значение Model.Cells[X].Data и Id (Id для обновления)
+    var newPriceList = false;
         $(document).ready(
             function() { // при первой загрузке важно сохранить исходные значения ячеек (Cell). Заполняется только cellsTHead
-                var model = @Html.Raw(Json.Encode(Model)); // надо взять значение Model.Cells[X].Data
                 var data = $("#priceListDropDown").val();
                 $.getJSON('/Items/GetColumnsOfAPriceList',
                     { priceListId: data },
@@ -97,7 +97,8 @@
 
         $("#priceListDropDown").on(
             'change', // изменили прайс-лист, следовательно старые ячейки неактуальны. Заполняются и cellsTHead и cellsTBody
-            function() {
+            function () {
+                newPriceList = true;
                 var data = $("#priceListDropDown").val();
                 $.getJSON('/Items/GetColumnsOfAPriceList',
                     { priceListId: data },
@@ -125,19 +126,17 @@
                                     break;
                                 case 3: //numeric
                                     $("#cellsTBody").append(
-                                        `<td><input id="data${key}" type="text" class="form-control" maxlength=${val.DataLength}"> </td>`);
+                                        `<td><input id="data${key}" type="number" class="form-control" maxlength=${val.DataLength}"> </td>`);
                                     break;
                                 };
                             });
                     });
             });
-    </script>
-    <script>
+
         // обновление товара с ячейками
         $("#updateItemAndCells").on('click',
             function () {
                 var validated = true;
-                var model = @Html.Raw(Json.Encode(Model)); // надо взять значение Model.Cells[X].Id
 
                 if ($.trim($("#itemName").val()) == '') {
                     alert("Заполните поле названия");
@@ -158,30 +157,48 @@
                     item.Id = ($("#itemId").val());
                     item.PriceListId = ($("#priceListDropDown").val());
                     item.Title = ($("#itemName").val());
+
                     var cells = new Array();
                     var i = 0; // нужно чтобы найти текущую ячейку в model.Cells и взять оттуда Id
-                    $("#cellsTBody td").each(function () {
+                    $("#cellsTBody td").each(function() {
                         var data = $(this).find('[id^=data').val(); // id начинается с...
                         var cell = {};
-                        cell.Id = model.Cells[i].Id;
+                        if (!newPriceList) {cell.Id = model.Cells[i].Id;} // если новый прайс-лист, то id не нужно, т.к. новые ячейки добавляются а не обновляются
                         cell.ItemId = item.Id;
                         cell.Data = data;
                         cells.push(cell);
                         i++;
                     });
-                    var data = JSON.stringify({ item: item, cells: cells });
-                    $.ajax({
-                        type: "POST",
-                        url: "/Items/UpdateItemAndCells",
-                        data: data,
-                        contentType: "application/json; charset=utf-8",
-                        dataType: "json",
-                        success: function (data) {
-                            alert("Успех");
-                            window.location.href = data;
-                        }
-                    });
+                    if (!newPriceList) { // прайс-лист не изменялся, только ячейки. Тогда ОБНОВЛЯЕМ и товар и ячейки
+                        var data = JSON.stringify({ item: item, cells: cells });
+                        $.ajax({
+                            type: "POST",
+                            url: "/Items/UpdateItemAndCells",
+                            data: data,
+                            contentType: "application/json; charset=utf-8",
+                            dataType: "json",
+                            success: function(data) {
+                                alert("Успех");
+                                window.location.href = data;
+                            }
+                        });
+                    } else { // изменили изначальный priceList, следовательно товар ОБНОВЛЯЕМ а ячейки ДОБАВЛЯЕМ, причем старые - удаляем
+                        var data = JSON.stringify({ item: item, newCells: cells });
+                        cells.forEach(function(cell) { delete cell.Id });// удаляем введенные раннее id, т.к. добавляем совершенно новые ячейки
+
+                        $.ajax({
+                            type: "POST",
+                            url: "/Items/UpdateItemInsertCells",
+                            data: data,
+                            contentType: "application/json; charset=utf-8",
+                            dataType: "json",
+                            success: function (data) {
+                                alert("Успех");
+                                window.location.href = data;
+                            }
+                        });
+                    }
                 }
             });
-    </script>
+</script>
 }
