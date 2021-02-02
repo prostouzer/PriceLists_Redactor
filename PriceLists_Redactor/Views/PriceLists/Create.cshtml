@@ -150,7 +150,7 @@
                         $("#columnsTBody").empty();
                         $.each(result,
                             function(key, val) {
-                                $("#columnsTBody").append(`<tr R${++rowIndex}">
+                                $("#columnsTBody").append(`<tr id=R${++rowIndex}">
                                                             <td><p>Колонка №${rowIndex}</p></td>
                                                             <td><input type="text" id="headerText" value="${val
                                     .HeaderText}" class="form-control"></td>
