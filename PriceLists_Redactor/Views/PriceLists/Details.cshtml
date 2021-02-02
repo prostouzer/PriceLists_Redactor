@@ -1,4 +1,5 @@
-﻿@using PriceLists_Redactor.Models
+﻿@using Microsoft.Ajax.Utilities
+@using PriceLists_Redactor.Models
 @model PriceLists_Redactor.Models.ViewModels.PriceListAndItemsViewModel
 
 @{
@@ -31,32 +32,41 @@
     <tbody id="cellsTBody">
         @foreach (Item item in Model.Items)
         {
-            <tr>
-                <td id="itemId">@item.Id</td>
-                <td><a href="#" class="name-data">@item.Title</a></td>
-                @{
-                    var itemCells = Model.Cells.Where(c => c.ItemId == item.Id);
-                    int index = 0;
-                    foreach (Cell cell in itemCells)
+        <tr>
+            <td id="itemId">@item.Id</td>
+            <td><a href="#" class="cell-data title">@item.Title</a></td>
+            @{
+                var itemCells = Model.Cells.Where(c => c.ItemId == item.Id);
+                int index = 0;
+                foreach (Cell cell in itemCells)
+                {
+                    if (Model.Columns[index].DataType == DataType.SingleLine)
                     {
-                        if (Model.Columns[index].DataType == DataType.Bool)
-                        {
-                            if (cell.Data == "1")
-                            {
-                                <td class="bool-data" data-type="select" data-value="1">Истина</td>
-                            }
-                            else
-                            {
-                                <td class="bool-data" data-type="select" data-value="0">Ложь</td>
-                            }
-                            index++;
-                            continue;
-                        }
-                        <td><a href="#" class="cell-data">@cell.Data</a></td>
-                        index++;
+                        <td><a href="#" class="cell-data singleLine">@cell.Data</a></td>
                     }
+                    if (Model.Columns[index].DataType == DataType.MultiLine)
+                    {
+                        <td><a href="#" class="cell-data multiLine">@cell.Data</a></td>
+                    }
+                    if (Model.Columns[index].DataType == DataType.Bool)
+                    {
+                        if (cell.Data == "1")
+                        {
+                            <td class="cell-data bool" data-type="select" data-value="1">Истина</td>
+                        }
+                        else
+                        {
+                            <td class="cell-data bool" data-type="select" data-value="0">Ложь</td>
+                        }
+                    }
+                    if (Model.Columns[index].DataType == DataType.Numeric)
+                    {
+                        <td><a href="#" class="cell-data numeric">@cell.Data</a></td>
+                    }
+                    index++;
                 }
-            </tr>
+            }
+        </tr>
         }
     </tbody>
 </table>
@@ -68,28 +78,49 @@
 {
     <script src="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/js/bootstrap-editable.min.js"></script>
     <script>
+        var model = @Html.Raw(Json.Encode(Model));
         $.fn.editable.defaults.mode = 'inline';
         $(document).ready(function () {
-            $('.name-data').editable({
+            $('.title').editable({
                 validate: function (value) {
                     if ($.trim(value) == '') {
                         return 'Введите название товара';
                     }
                 }
             });
-            $('.cell-data').editable({
+            $('.singleLine').editable({
+                tpl: '<textarea maxlength="20"></textarea>',
                 validate: function (value) {
                     if ($.trim(value) == '') {
                         return 'Заполните ячейку';
                     }
                 }
             });
-            $('.bool-data').editable({
+            $('.multiLine').editable({
+                tpl: '<textarea maxlength="150"></textarea>',
+                validate: function (value) {
+                    if ($.trim(value) == '') {
+                        return 'Заполните ячейку';
+                    }
+                }
+            });
+            $('.bool').editable({
                 source: [{ value: 0, text: 'Ложь' }, { value: 1, text: 'Истина' }]
+            });
+            $('.numeric').editable({
+                tpl: '<textarea maxlength="10"></textarea>',
+                validate: function (value) {
+                    if ($.trim(value) == '') {
+                        return 'Заполните ячейку';
+                    }
+                    if ($.isNumeric(value) == '') {
+                        return 'Введите число'
+                    }
+                }
             });
         });
 
-        $(".name-data").on('save',
+        $(".title").on('save',
             function (e, params) {
                 var itemTitle = params.newValue;
                 var itemId = $(this).closest("tr").find("td:first").text();
@@ -102,7 +133,7 @@
                     contentType: "application/json; charset=utf-8",
                     dataType: "json",
                     success: function (data) {
-                        
+
                     }
                 });
             });
