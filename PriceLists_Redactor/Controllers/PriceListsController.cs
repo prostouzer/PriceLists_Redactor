@@ -53,6 +53,15 @@ namespace PriceLists_Redactor.Controllers
             return View(new PriceListAndColumnsViewModel(new PriceList()));
         }
 
+        public JsonResult UpdateItemTitle(int itemId, string newTitle)
+        {
+            var item = db.Items.Single(i => i.Id == itemId);
+            item.Title = newTitle;
+            db.SaveChanges();
+
+            return Json(Url.Action("Index", "PriceLists"));
+        }
+
         public JsonResult InsertPriceListAndColumns(PriceList priceList, IEnumerable<Column> columns)
         {
             if (priceList == null)

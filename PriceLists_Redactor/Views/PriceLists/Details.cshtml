@@ -71,7 +71,7 @@
         $.fn.editable.defaults.mode = 'inline';
         $(document).ready(function () {
             $('.name-data').editable({
-                validate: function(value) {
+                validate: function (value) {
                     if ($.trim(value) == '') {
                         return 'Введите название товара';
                     }
@@ -90,17 +90,29 @@
         });
 
         $(".name-data").on('save',
-            function () {
-            //function (e, params) {
-                var cell = {};
-                var cellIndex = $(this).parent().index();
+            function (e, params) {
+                var itemTitle = params.newValue;
                 var itemId = $(this).closest("tr").find("td:first").text();
-                alert(data);
+                var data = JSON.stringify({itemId: itemId, newTitle: itemTitle});
+
+                $.ajax({
+                    type: "POST",
+                    url: "/PriceLists/UpdateItemTitle",
+                    data: data,
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (data) {
+                        
+                    }
+                });
             });
 
         $(".cell-data").on('save',
-            function (e, params) {
-                alert(params.newValue);
+            function () {
+                //var cell = {};
+                //var cellIndex = $(this).parent().index();
+                //var itemId = $(this).closest("tr").find("td:first").text();
+                //alert(data);
             });
     </script>
 
