@@ -28,11 +28,11 @@
             }
         </tr>
     </thead>
-    <tbody>
+    <tbody id="cellsTBody">
         @foreach (Item item in Model.Items)
         {
             <tr>
-                <td>@item.Id</td>
+                <td id="itemId">@item.Id</td>
                 <td><a href="#" class="name-data">@item.Title</a></td>
                 @{
                     var itemCells = Model.Cells.Where(c => c.ItemId == item.Id);
@@ -47,7 +47,7 @@
                             }
                             else
                             {
-                                <td class="bool-data">Ложь</td>
+                                <td class="bool-data" data-type="select" data-value="0">Ложь</td>
                             }
                             index++;
                             continue;
@@ -71,13 +71,10 @@
         $.fn.editable.defaults.mode = 'inline';
         $(document).ready(function () {
             $('.name-data').editable({
-                validate: function (value) {
+                validate: function(value) {
                     if ($.trim(value) == '') {
                         return 'Введите название товара';
                     }
-                },
-                ajaxOptions: {
-
                 }
             });
             $('.cell-data').editable({
@@ -93,8 +90,12 @@
         });
 
         $(".name-data").on('save',
-            function (e, params) {
-                alert(params.newValue);
+            function () {
+            //function (e, params) {
+                var cell = {};
+                var cellIndex = $(this).parent().index();
+                var itemId = $(this).closest("tr").find("td:first").text();
+                alert(data);
             });
 
         $(".cell-data").on('save',
