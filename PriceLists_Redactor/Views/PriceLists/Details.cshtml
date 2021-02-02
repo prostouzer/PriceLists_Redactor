@@ -33,7 +33,7 @@
         {
             <tr>
                 <td>@item.Id</td>
-                <td><a href="#" class="data">@item.Title</a></td>
+                <td><a href="#" class="name-data">@item.Title</a></td>
                 @{
                     var itemCells = Model.Cells.Where(c => c.ItemId == item.Id);
                     int index = 0;
@@ -52,7 +52,7 @@
                             index++;
                             continue;
                         }
-                        <td>@cell.Data</td>
+                        <td><a href="#" class="cell-data">@cell.Data</a></td>
                         index++;
                     }
                 }
@@ -70,12 +70,23 @@
     <script>
         $.fn.editable.defaults.mode = 'inline';
         $(document).ready(function () {
-            $('.data').editable({
-                success: function() {
-                    alert("YSPEX");
-                }
+            $('.cell-data').editable({
             });
         });
+        $(document).ready(function () {
+            $('.name-data').editable({
+            });
+        });
+
+        $(".name-data").on('save',
+            function (e, params) {
+                alert(params.newValue);
+            });
+
+        $(".cell-data").on('save',
+            function (e, params) {
+                alert(params.newValue);
+            });
     </script>
 
     <script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>
