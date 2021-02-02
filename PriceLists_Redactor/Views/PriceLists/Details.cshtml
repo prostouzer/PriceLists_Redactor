@@ -43,11 +43,11 @@
                         {
                             if (cell.Data == "1")
                             {
-                                <td>Истина</td>
+                                <td class="bool-data" data-type="select" data-value="1">Истина</td>
                             }
                             else
                             {
-                                <td>Ложь</td>
+                                <td class="bool-data">Ложь</td>
                             }
                             index++;
                             continue;
@@ -70,11 +70,22 @@
     <script>
         $.fn.editable.defaults.mode = 'inline';
         $(document).ready(function () {
-            $('.cell-data').editable({
-            });
-        });
-        $(document).ready(function () {
             $('.name-data').editable({
+                validate: function (value) {
+                    if ($.trim(value) == '') {
+                        return 'Введите название товара';
+                    }
+                }
+            });
+            $('.cell-data').editable({
+                validate: function (value) {
+                    if ($.trim(value) == '') {
+                        return 'Заполните ячейку';
+                    }
+                }
+            });
+            $('.bool-data').editable({
+                source: [{ value: 0, text: 'Ложь' }, { value: 1, text: 'Истина' }]
             });
         });
 
