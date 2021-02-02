@@ -100,13 +100,13 @@
                 return false;
             }
 
-            $("#cellsTBody .form-control").each(function () {
+            $("#cellsTBody .form-control").each(function() {
                 if ($.trim($(this).val()) == '') {
                     alert("Заполните все ячейки");
                     validated = false;
                     return false;
                 }
-            })
+            });
 
             if (validated) {
                 var item = {};

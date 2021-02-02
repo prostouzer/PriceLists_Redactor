@@ -15,12 +15,12 @@
     <div class="form-horizontal">
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        @Html.HiddenFor(model => model.Item.Id)
+        @Html.HiddenFor(model => model.Item.Id, new { @id = "itemId" })
 
         <div class="form-group">
             @Html.LabelFor(model => model.Item.Title, "Название", new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Item.Title, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.Item.Title, new { htmlAttributes = new { @class = "form-control", id = "itemName" } })
                 @Html.ValidationMessageFor(model => model.Item.Title, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -35,7 +35,7 @@
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input id="updateItemAndCells" type="button" value="Save" class="btn btn-success" />
+                <input id="updateItemAndCells" type="button" value="Сохранить" class="btn btn-success" />
             </div>
         </div>
 
@@ -69,31 +69,31 @@
                             function(key, val) {
                                 $("#cellsTHead").append('<th id="' + key + '">' + val.HeaderText + '</th>');
                                 switch (val.DataType) {
-                                    case 0: //singleLine
-                                        $("#cellsTBody").append(
-                                            `<td><input id="data${key}" type="text" class="form-control" maxlength=${val.DataLength} value="${model.Cells[key].Data}"> </td>`);
-                                        break;
-                                    case 1: //multiLine
-                                        $("#cellsTBody").append(
-                                            `<td><input id="data${key}" type="text" class="form-control" maxlength=${val.DataLength} value="${model.Cells[key].Data}"> </td>`);
-                                        break;
-                                    case 2: //bool
-                                        $("#cellsTBody").append(
-                                            `<td>
+                                case 0: //singleLine
+                                    $("#cellsTBody").append(
+                                        `<td><input id="data${key}" type="text" class="form-control" maxlength=${val.DataLength} value="${model.Cells[key].Data}"> </td>`);
+                                    break;
+                                case 1: //multiLine
+                                    $("#cellsTBody").append(
+                                        `<td><input id="data${key}" type="text" class="form-control" maxlength=${val.DataLength} value="${model.Cells[key].Data}"> </td>`);
+                                    break;
+                                case 2: //bool
+                                    $("#cellsTBody").append(
+                                        `<td>
                                             <select id="data${key}" class="form-control" ><option value=0>Ложь</option> <option value=1>Истина</option> </select>
                                         </td>`);
-                                        // установка изначального bool значения
-                                        var element = document.getElementById(`data${key}`);
-                                        element.value = model.Cells[key].Data;
-                                        break;
-                                    case 3: //numeric
-                                        $("#cellsTBody").append(
-                                            `<td><input id="data${key}" type="number" class="form-control" maxlength=${val.DataLength} value="${model.Cells[key].Data}"> </td>`);
-                                        break;
+                                    // установка изначального bool значения
+                                    var element = document.getElementById(`data${key}`);
+                                    element.value = model.Cells[key].Data;
+                                    break;
+                                case 3: //numeric
+                                    $("#cellsTBody").append(
+                                        `<td><input id="data${key}" type="number" class="form-control" maxlength=${val.DataLength} value="${model.Cells[key].Data}"> </td>`);
+                                    break;
                                 }
                             });
                     });
-    });
+            });
 
         $("#priceListDropDown").on(
             'change', // изменили прайс-лист, следовательно старые ячейки неактуальны. Заполняются и cellsTHead и cellsTBody
@@ -108,9 +108,9 @@
                             function(key, val) {
                                 $("#cellsTHead").append('<th id="' + key + '">' + val.HeaderText + '</th>');
                                 switch (val.DataType) {
-                                    case 0: //singleLine
-                                        $("#cellsTBody").append(
-                                            `<td><input id="data${key}" type="text" class="form-control" maxlength=${val.DataLength}"> </td>`);
+                                case 0: //singleLine
+                                    $("#cellsTBody").append(
+                                        `<td><input id="data${key}" type="text" class="form-control" maxlength=${val.DataLength}"> </td>`);
                                     break;
                                 case 1: //multiLine
                                     $("#cellsTBody").append(
@@ -130,6 +130,58 @@
                                 };
                             });
                     });
+            });
+    </script>
+    <script>
+        // обновление товара с ячейками
+        $("#updateItemAndCells").on('click',
+            function () {
+                var validated = true;
+                var model = @Html.Raw(Json.Encode(Model)); // надо взять значение Model.Cells[X].Id
+
+                if ($.trim($("#itemName").val()) == '') {
+                    alert("Заполните поле названия");
+                    validated = false;
+                    return false;
+                }
+
+                $("#cellsTBody .form-control").each(function () {
+                    if ($.trim($(this).val()) == '') {
+                        alert("Заполните все ячейки");
+                        validated = false;
+                        return false;
+                    }
+                });
+
+                if (validated) {
+                    var item = {};
+                    item.Id = ($("#itemId").val());
+                    item.PriceListId = ($("#priceListDropDown").val());
+                    item.Title = ($("#itemName").val());
+                    var cells = new Array();
+                    var i = 0; // нужно чтобы найти текущую ячейку в model.Cells и взять оттуда Id
+                    $("#cellsTBody td").each(function () {
+                        var data = $(this).find('[id^=data').val(); // id начинается с...
+                        var cell = {};
+                        cell.Id = model.Cells[i].Id;
+                        cell.ItemId = item.Id;
+                        cell.Data = data;
+                        cells.push(cell);
+                        i++;
+                    });
+                    var data = JSON.stringify({ item: item, cells: cells });
+                    $.ajax({
+                        type: "POST",
+                        url: "/Items/UpdateItemAndCells",
+                        data: data,
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+                        success: function (data) {
+                            alert("Успех");
+                            window.location.href = data;
+                        }
+                    });
+                }
             });
     </script>
 }
