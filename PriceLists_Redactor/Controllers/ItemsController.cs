@@ -92,23 +92,35 @@ namespace PriceLists_Redactor.Controllers
             {
                 return HttpNotFound();
             }
+            ItemAndCellsViewModel itemAndCells = new ItemAndCellsViewModel
+            {
+                Item = item,
+                Cells = db.Cells.Where(c => c.ItemId == item.Id)
+            };
             ViewBag.PriceListId = new SelectList(db.PriceLists, "Id", "Name", item.PriceListId);
-            return View(item);
+            return View(itemAndCells);
         }
 
         // POST: Items/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit([Bind(Include = "Id,Title,PriceListId")] Item item)
+        public async Task<ActionResult> Edit(ItemAndCellsViewModel itemAndCells)
         {
             if (ModelState.IsValid)
             {
+                var item = itemAndCells.Item;
                 db.Entry(item).State = EntityState.Modified;
+                var cells = itemAndCells.Cells;
+                foreach (Cell cell in cells)
+                {
+                    db.Entry(cell).State = EntityState.Modified;
+                }
                 await db.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
-            ViewBag.PriceListId = new SelectList(db.PriceLists, "Id", "Name", item.PriceListId);
-            return View(item);
+            ViewBag.PriceListId = new SelectList(db.PriceLists, "Id", "Name", itemAndCells.Item.PriceListId);
+            itemAndCells.Cells = db.Cells.Where(c => c.ItemId == itemAndCells.Item.Id);
+            return View(itemAndCells);
         }
 
         // GET: Items/Delete/5

@@ -86,13 +86,14 @@ namespace PriceLists_Redactor.Controllers
             }
             PriceList priceList = await db.PriceLists.FindAsync(id);
 
-            List<Column> columns = db.Columns.Where(c => c.PriceListId == priceList.Id).ToList();
-            PriceListAndColumnsViewModel priceListAndColumns = new PriceListAndColumnsViewModel(priceList) {Columns =  columns};
-
             if (priceList == null)
             {
                 return HttpNotFound();
             }
+
+            List<Column> columns = db.Columns.Where(c => c.PriceListId == priceList.Id).ToList();
+            PriceListAndColumnsViewModel priceListAndColumns = new PriceListAndColumnsViewModel(priceList) { Columns = columns };
+
             return View(priceListAndColumns);
         }
 

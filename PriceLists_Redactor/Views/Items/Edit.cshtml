@@ -1,35 +1,35 @@
-﻿@model PriceLists_Redactor.Models.Item
+﻿@using PriceLists_Redactor.Models
+@model PriceLists_Redactor.Models.ViewModels.ItemAndCellsViewModel
 
 @{
     ViewBag.Title = "Изменить товар";
 }
 
-<h2>Edit</h2>
+<h2>Изменение товара</h2>
 
 
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    
+
     <div class="form-horizontal">
-        <h4>Item</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        @Html.HiddenFor(model => model.Id)
+        @Html.HiddenFor(model => model.Item.Id)
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.Item.Title, "Название", new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
+                @Html.EditorFor(model => model.Item.Title, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Item.Title, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.PriceListId, "PriceListId", htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.Item.PriceListId, "Прайс-лист", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownList("PriceListId", null, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.PriceListId, "", new { @class = "text-danger" })
+                @Html.DropDownList("PriceListId", null, new { @class = "form-control", id = "priceListDropDown" })
+                @Html.ValidationMessageFor(model => model.Item.PriceListId, "", new { @class = "text-danger" })
             </div>
         </div>
 
@@ -38,13 +38,113 @@
                 <input type="submit" value="Save" class="btn btn-default" />
             </div>
         </div>
+
+        <table>
+            <thead id="cellsTHead">
+            </thead>
+            <tbody id="cellsTBody">
+                @foreach (Cell cell in Model.Cells)
+                {
+                }
+            </tbody>
+        </table>
     </div>
 }
 
 <div>
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Вернуться", "Index")
 </div>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
+    <script>
+
+        $(document).ready(
+            function() { // при первой загрузке важно сохранить исходные значения ячеек (Cell). Заполняется только cellsTHead
+                var model = @Html.Raw(Json.Encode(Model)); // надо взять значение Model.Cells[X].Data
+                var data = $("#priceListDropDown").val();
+                $.getJSON('/Items/GetColumnsOfAPriceList',
+                    { priceListId: data },
+                    function(result) {
+                        $("#cellsTHead").empty();
+                        $("#cellsTBody").empty();
+                        $.each(result,
+                            function(key, val) {
+                                $("#cellsTHead").append('<th id="' + key + '">' + val.HeaderText + '</th>');
+                                switch (val.DataType) {
+                                    case 0: //singleLine
+                                        $("#cellsTBody").append(
+                                            `<td><input id="data${key}" type="text" class="form-control" maxlength=${val
+                                                .DataLength} value="${model.Cells[key].Data}"> </td>`);
+                                        break;
+                                    case 1: //multiLine
+                                        $("#cellsTBody").append(
+                                            `<td><input id="data${key}" type="text" class="form-control" maxlength=${val
+                                                .DataLength} value="${model.Cells[key].Data}"> </td>`);
+                                        break;
+                                    case 2: //bool
+                                        $("#cellsTBody").append(
+                                            `<td>
+                                            <select id="data${key
+                                            }" class="form-control" ><option value=0>Ложь</option> <option value=1>Истина</option> </select>
+                                        </td>`);
+                                        // установка изначального bool значения
+                                        var element = document.getElementById(`data${key}`);
+                                        element.value = val.Data;
+                                        break;
+                                    case 3: //numeric
+                                        $("#cellsTBody").append(
+                                            `<td><input id="data${key}" type="number" class="form-control" maxlength=` +
+                                            val.DataLength +
+                                            ` value="` +
+                                            model.Cells[key].Data +
+                                            `" ` +
+                                            `</td>`);
+                                        break;
+                                }
+                            });
+                    });
+    });
+
+        $("#priceListDropDown").on(
+            'change', // изменили прайс-лист, следовательно старые ячейки неактуальны. Заполняются и cellsTHead и cellsTBody
+            function() {
+                var data = $("#priceListDropDown").val();
+                $.getJSON('/Items/GetColumnsOfAPriceList',
+                    { priceListId: data },
+                    function(result) {
+                        $("#cellsTHead").empty();
+                        $("#cellsTBody").empty();
+                        $.each(result,
+                            function(key, val) {
+                                $("#cellsTHead").append('<th id="' + key + '">' + val.HeaderText + '</th>');
+                                switch (val.DataType) {
+                                case 0: //singleLine
+                                    $("#cellsTBody").append(
+                                        '<td><input id="data" type="text" class="form-control" maxlength="' +
+                                        val.DataLength +
+                                        '</td>"');
+                                    break;
+                                case 1: //multiLine
+                                    $("#cellsTBody").append(
+                                        '<td><input id="data" type="text" class="form-control" maxlength="' +
+                                        val.DataLength +
+                                        '</td>"');
+                                    break;
+                                case 2: //bool
+                                    $("#cellsTBody")
+                                        .append(
+                                            '<td><select id="data" class="form-control" > <option value=0>Ложь</option> <option value=1>Истина</option> </select></td>');
+                                    break;
+                                case 3: //numeric
+                                    $("#cellsTBody").append(
+                                        '<td><input id="data" type="number" class="form-control"  maxlength="' +
+                                        val.DataLength +
+                                        '</td>"');
+                                    break;
+                                };
+                            });
+                    });
+            });
+    </script>
 }
