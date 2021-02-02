@@ -62,6 +62,18 @@ namespace PriceLists_Redactor.Controllers
             return Json(Url.Action("Index", "PriceLists"));
         }
 
+        public JsonResult UpdateCell(int itemId, int cellIndex, string data)
+        {
+            var itemCells = db.Cells.Where(c => c.ItemId == itemId).ToList();
+            var cellToUpdate = itemCells[cellIndex];
+
+            var cellEntity = db.Cells.Single(c => c.Id == cellToUpdate.Id);
+            cellEntity.Data = data;
+
+            db.SaveChanges();
+            return Json(Url.Action("Index", "PriceLists"));
+        }
+
         public JsonResult InsertPriceListAndColumns(PriceList priceList, IEnumerable<Column> columns)
         {
             if (priceList == null)
