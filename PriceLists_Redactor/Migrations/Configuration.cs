@@ -8,7 +8,7 @@ namespace PriceLists_Redactor.Migrations
     using System.Data.Entity.Migrations;
     using System.Linq;
 
-    internal sealed class Configuration : DbMigrationsConfiguration<PriceLists_Redactor.Data.PriceLists_RedactorContext>
+    internal sealed class Configuration : DbMigrationsConfiguration<PriceLists_Redactor.Data.PriceListsRedactorContext>
     {
         public Configuration()
         {
@@ -16,7 +16,7 @@ namespace PriceLists_Redactor.Migrations
             ContextKey = "PriceLists_Redactor.Data.PriceLists_RedactorContext";
         }
 
-        protected override void Seed(PriceLists_Redactor.Data.PriceLists_RedactorContext context)
+        protected override void Seed(PriceLists_Redactor.Data.PriceListsRedactorContext context)
         {
             var priceList1 = new PriceList() { Name = "Прайс-лист мебели" };
             var priceList2 = new PriceList() { Name = "Прайс-лист одежды" };

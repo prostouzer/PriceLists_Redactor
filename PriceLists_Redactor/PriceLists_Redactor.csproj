@@ -163,7 +163,8 @@
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Controllers\ItemsController.cs" />
     <Compile Include="Controllers\PriceListsController.cs" />
-    <Compile Include="Data\PriceLists_RedactorContext.cs" />
+    <Compile Include="Data\IPriceListsRedactorContext.cs" />
+    <Compile Include="Data\PriceListsRedactorContext.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
