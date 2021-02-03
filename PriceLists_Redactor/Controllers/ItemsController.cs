@@ -46,32 +46,15 @@ namespace PriceLists_Redactor.Controllers
             return Json( columns, JsonRequestBehavior.AllowGet);
         }
 
-        // POST: Items/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(ItemAndCellsViewModel itemAndCells)
+        public JsonResult InsertItemAndCells(Item item, IEnumerable<Cell> cells)
         {
-            if (ModelState.IsValid)
-            {
-                var item = itemAndCells.Item;
-                _db.Items.Add(item);
-                _db.SaveChanges();
+            AddItemAndCells(item, cells);
 
-                foreach (var cell in itemAndCells.Cells)
-                {
-                    cell.ItemId = item.Id;
-                    _db.Cells.Add(cell);
-                }
-                _db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-
-            SelectList priceLists = new SelectList(_db.PriceLists, "Id", "Name", itemAndCells.Item.PriceListId);
-            ViewBag.PriceLists = priceLists;
-            return View(itemAndCells);
+            // т.к. ajax-post запрос то нет смысла использовать RedirectToAction - не среагирует
+            return Json(Url.Action("Index", "Items"));
         }
 
-        public JsonResult InsertItemAndCells(Item item, IEnumerable<Cell> cells)
+        public void AddItemAndCells(Item item, IEnumerable<Cell> cells)
         {
             _db.Items.Add(item);
             _db.SaveChanges();
@@ -81,10 +64,8 @@ namespace PriceLists_Redactor.Controllers
                 cell.ItemId = item.Id;
                 _db.Cells.Add(cell);
             }
-            _db.SaveChanges();
 
-            // т.к. ajax-post запрос то нет смысла использовать RedirectToAction - не среагирует
-            return Json(Url.Action("Index", "Items"));
+            _db.SaveChanges();
         }
 
         // GET: Items/Edit/5
@@ -108,29 +89,15 @@ namespace PriceLists_Redactor.Controllers
             return View(itemAndCells);
         }
 
-        // POST: Items/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(ItemAndCellsViewModel itemAndCells)
+        public JsonResult UpdateItemAndCellsJson(Item item, IEnumerable<Cell> cells)
         {
-            if (ModelState.IsValid)
-            {
-                var item = itemAndCells.Item;
-                _db.MarkAsModified(item);
-                var cells = itemAndCells.Cells;
-                foreach (Cell cell in cells)
-                {
-                    _db.MarkAsModified(cell);
-                }
-                _db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-            ViewBag.PriceListId = new SelectList(_db.PriceLists, "Id", "Name", itemAndCells.Item.PriceListId);
-            itemAndCells.Cells = _db.Cells.Where(c => c.ItemId == itemAndCells.Item.Id);
-            return View(itemAndCells);
+            UpdateItemAndCells(item, cells);
+
+            // т.к. ajax-post запрос то нет смысла использовать RedirectToAction - не среагирует
+            return Json(Url.Action("Index", "Items"));
         }
 
-        public JsonResult UpdateItemAndCells(Item item, IEnumerable<Cell> cells)
+        public void UpdateItemAndCells(Item item, IEnumerable<Cell> cells)
         {
             _db.MarkAsModified(item);
 
@@ -138,10 +105,8 @@ namespace PriceLists_Redactor.Controllers
             {
                 _db.MarkAsModified(cell);
             }
-            _db.SaveChanges();
 
-            // т.к. ajax-post запрос то нет смысла использовать RedirectToAction - не среагирует
-            return Json(Url.Action("Index", "Items"));
+            _db.SaveChanges();
         }
 
         public JsonResult UpdateItemInsertCells(Item item, IEnumerable<Cell> newCells)

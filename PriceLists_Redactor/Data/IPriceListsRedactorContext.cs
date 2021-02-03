@@ -11,7 +11,7 @@ namespace PriceLists_Redactor.Data
         DbSet<Cell> Cells { get; set; }
         void MarkAsModified(PriceList priceList);
         void MarkAsModified(Column column);
-        void MarkAsModified(Item item);
+        void MarkAsModified(Item newItem);
         void MarkAsModified(Cell cell);
 
         int SaveChanges();

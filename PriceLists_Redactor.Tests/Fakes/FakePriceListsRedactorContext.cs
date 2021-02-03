@@ -26,8 +26,24 @@ namespace PriceLists_Redactor.Tests.Fakes
 
         public void MarkAsModified(PriceList priceList) { }
         public void MarkAsModified(Column column) { }
-        public void MarkAsModified(Item item) { }
-        public void MarkAsModified(Cell cell) { }
+
+        public void MarkAsModified(Item newItem)
+        {
+            var item = Items.Single(i => i.Id == newItem.Id);
+            item.PriceList = newItem.PriceList;
+            item.Id = newItem.Id;
+            item.PriceListId = newItem.PriceListId;
+            item.Title = newItem.Title;
+        }
+
+        public void MarkAsModified(Cell newCell)
+        {
+            var cell = Cells.Single(c => c.Id == newCell.Id);
+            cell.Item = newCell.Item;
+            cell.Data = newCell.Data;
+            cell.Id = newCell.Id;
+            cell.ItemId = newCell.Id;
+        }
 
         public int SaveChanges()
         {
