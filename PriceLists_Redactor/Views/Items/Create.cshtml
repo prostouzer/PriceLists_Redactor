@@ -93,6 +93,11 @@
     <script>
         $("#addNewItemWithCells").on('click', function () {
             var validated = true;
+            if ($("#priceListDropDown").val() == null) {
+                alert("Укажите прайс-лист");
+                validated = false;
+                return false;
+            }
 
             if ($.trim($("#itemName").val()) == '') {
                 alert("Заполните поле названия");

@@ -124,7 +124,6 @@
                         var currentRowColumns = {};
                         currentRowColumns.HeaderText = currentRow.find("#headerText").val();
                         currentRowColumns.DataType = currentRow.find("select[id^=dataTypeSelect").val(); // id начинается с "dataTypeSelect"
-                        //currentRowColumns.DataType = currentRow.find("#dataTypeSelect").val();
                         columns.push(currentRowColumns);
                     });
                     var data = JSON.stringify({ priceList: priceList, columns: columns });
