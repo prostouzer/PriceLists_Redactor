@@ -15,6 +15,7 @@ namespace PriceLists_Redactor.Tests.Controllers
     {
         private IPriceListsRedactorContext _context;
         private PriceListsController _controller;
+
         [SetUp]
         public void SetUp()
         {

@@ -97,7 +97,7 @@ namespace PriceLists_Redactor.Controllers
             return Json(Url.Action("Index", "Items"));
         }
 
-        public void UpdateItemAndCells(Item item, IEnumerable<Cell> cells)
+        public void UpdateItemAndCells(Item item, IEnumerable<Cell> cells) // поменяли название И НЕ изменяли прайс-лист - старые колонки
         {
             _db.MarkAsModified(item);
 
@@ -109,11 +109,19 @@ namespace PriceLists_Redactor.Controllers
             _db.SaveChanges();
         }
 
-        public JsonResult UpdateItemInsertCells(Item item, IEnumerable<Cell> newCells)
+        public JsonResult UpdateItemInsertCellsJson(Item item, IEnumerable<Cell> newCells) // поменяли название И изменили прайс-лист - новые колонки, следовательно ячейки надо не обновлять, а удалять и добавлять новые
+        {
+            UpdateItemInsertCells(item, newCells);
+
+            // т.к. ajax-post запрос то нет смысла использовать RedirectToAction - не среагирует
+            return Json(Url.Action("Index", "Items"));
+        }
+
+        public void UpdateItemInsertCells(Item item, IEnumerable<Cell> newCells)
         {
             _db.MarkAsModified(item);
 
-            var oldCells = _db.Cells.Where(c => c.ItemId == item.Id);
+            var oldCells = _db.Cells.Where(c => c.ItemId == item.Id).ToList();
             foreach (Cell cell in oldCells)
             {
                 _db.Cells.Remove(cell);
@@ -123,10 +131,8 @@ namespace PriceLists_Redactor.Controllers
             {
                 _db.Cells.Add(cell);
             }
-            _db.SaveChanges();
 
-            // т.к. ajax-post запрос то нет смысла использовать RedirectToAction - не среагирует
-            return Json(Url.Action("Index", "Items"));
+            _db.SaveChanges();
         }
 
         // GET: Items/Delete/5
@@ -149,10 +155,15 @@ namespace PriceLists_Redactor.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
+            DeleteItem(id);
+            return RedirectToAction("Index");
+        }
+
+        public void DeleteItem(int id)
+        {
             Item item = _db.Items.Find(id);
             _db.Items.Remove(item);
             _db.SaveChanges();
-            return RedirectToAction("Index");
         }
 
         protected override void Dispose(bool disposing)

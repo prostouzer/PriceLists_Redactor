@@ -13,6 +13,7 @@ namespace PriceLists_Redactor.Tests.Controllers
     {
         private IPriceListsRedactorContext _context;
         private ItemsController _controller;
+
         [SetUp]
         public void SetUp()
         {
@@ -83,6 +84,55 @@ namespace PriceLists_Redactor.Tests.Controllers
             Assert.AreEqual(newCells.Single().Id, actualCells.Single().Id);
             Assert.AreEqual(newCells.Single().Data, actualCells.Single().Data);
             Assert.AreEqual(newCells.Single().ItemId, actualCells.Single().ItemId);
+        }
+
+        [Test]
+        public void UpdateItemInsertCells_IsOk()
+        {
+            //arrange
+            var oldItem = new Item() { Id = 1, PriceListId = 1, Title = "OldTitle" };
+            List<Cell> oldCells = new List<Cell>()
+            {
+                new Cell(){ Id=1, Data="OldData", ItemId=1 }
+            };
+            _context.Items.Add(oldItem);
+            foreach (Cell cell in oldCells)
+            {
+                _context.Cells.Add(cell);
+            }
+
+            var newItem = new Item() { Id = 1, PriceListId = 2, Title = "MyNewTitle" };
+            List<Cell> newCells = new List<Cell>()
+            {
+                new Cell(){ Data="MyNewData", ItemId=1 }
+            };
+
+            //act
+            _controller.UpdateItemInsertCells(newItem, newCells);
+            var actualItem = _context.Items.Single();
+            var actualCells = new List<Cell>() { _context.Cells.Single() };
+
+            //assert
+            Assert.AreEqual(newItem.Id, actualItem.Id);
+            Assert.AreEqual(newItem.PriceListId, actualItem.PriceListId);
+            Assert.AreEqual(newItem.Title, actualItem.Title);
+
+            Assert.AreEqual(newCells.Single().Data, actualCells.Single().Data);
+            Assert.AreEqual(newCells.Single().ItemId, actualCells.Single().ItemId);
+        }
+
+        [Test]
+        public void DeleteItem_IsOk()
+        {
+            //arrange
+            var item = new Item() { Id=1, PriceListId = 999, Title = "ItemToRemove"};
+            _context.Items.Add(item);
+
+            //act
+            _controller.DeleteItem(item.Id);
+
+            //assert
+            Assert.AreEqual(false, _context.Items.Any());
         }
     }
 }
