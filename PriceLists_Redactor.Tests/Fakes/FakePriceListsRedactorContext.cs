@@ -11,9 +11,17 @@ namespace PriceLists_Redactor.Tests.Fakes
 {
     class FakePriceListsRedactorContext : IPriceListsRedactorContext
     {
+        public FakePriceListsRedactorContext()
+        {
+            this.PriceLists = new FakePriceListsDbSet();
+            this.Columns = new FakeColumnsDbSet();
+            this.Items = new FakeItemsDbSet();
+            this.Cells = new FakeCellsDbSet();
+        }
+
         public DbSet<PriceList> PriceLists { get; set; }
-        public DbSet<Item> Items { get; set; }
         public DbSet<Column> Columns { get; set; }
+        public DbSet<Item> Items { get; set; }
         public DbSet<Cell> Cells { get; set; }
 
         public void MarkAsModified(PriceList priceList) { }

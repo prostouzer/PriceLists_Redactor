@@ -38,16 +38,22 @@ namespace PriceLists_Redactor.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             PriceList priceList = _db.PriceLists.Find(id);
-            List<Column> columns = _db.Columns.Where(c => c.PriceListId == id).ToList();
-            IEnumerable<Item> items = _db.Items.Where(i => i.PriceListId == id);
-            IEnumerable<Cell> cells = _db.Cells.Where(c => c.Item.PriceListId == id);
-
-            PriceListAndItemsViewModel priceListWithItems = new PriceListAndItemsViewModel(priceList, columns, items, cells);
+            var priceListWithItems = GetPriceListAndItemsViewModelFromPriceList(priceList);
             if (priceList == null)
             {
                 return HttpNotFound();
             }
             return View(priceListWithItems);
+        }
+
+        public PriceListAndItemsViewModel GetPriceListAndItemsViewModelFromPriceList(PriceList priceList)
+        {
+            List<Column> columns = _db.Columns.Where(c => c.PriceListId == priceList.Id).ToList();
+            IEnumerable<Item> items = _db.Items.Where(i => i.PriceListId == priceList.Id);
+            IEnumerable<Cell> cells = _db.Cells.Where(c => c.Item.PriceListId == priceList.Id);
+
+            PriceListAndItemsViewModel priceListWithItems = new PriceListAndItemsViewModel(priceList, columns, items, cells);
+            return priceListWithItems;
         }
 
         // GET: PriceLists/Create
@@ -59,16 +65,28 @@ namespace PriceLists_Redactor.Controllers
             return View(new PriceListAndColumnsViewModel(new PriceList()));
         }
 
-        public JsonResult UpdateItemTitle(int itemId, string newTitle)
+        public JsonResult UpdateItemTitleJson(int itemId, string newTitle)
         {
-            var item = _db.Items.Single(i => i.Id == itemId);
-            item.Title = newTitle;
-            _db.SaveChanges();
+            UpdateItemTitle(itemId, newTitle);
 
             return Json(Url.Action("Index", "PriceLists"));
         }
 
-        public JsonResult UpdateCell(int itemId, int cellIndex, string data)
+        public void UpdateItemTitle(int itemId, string newTitle)
+        {
+            var item = _db.Items.Single(i => i.Id == itemId);
+            item.Title = newTitle;
+
+            _db.SaveChanges();
+        }
+
+        public JsonResult UpdateCellJson(int itemId, int cellIndex, string data)
+        {
+            UpdateCell(itemId, cellIndex, data);
+            return Json(Url.Action("Index", "PriceLists"));
+        }
+
+        public void UpdateCell(int itemId, int cellIndex, string data)
         {
             var itemCells = _db.Cells.Where(c => c.ItemId == itemId).ToList();
             var cellToUpdate = itemCells[cellIndex];
@@ -77,10 +95,17 @@ namespace PriceLists_Redactor.Controllers
             cellEntity.Data = data;
 
             _db.SaveChanges();
+        }
+
+        public JsonResult InsertPriceListAndColumnsJson(PriceList priceList, IEnumerable<Column> columns)
+        {
+            InsertPriceListAndColumns(priceList, columns);
+
+            // т.к. ajax-post запрос то нет смысла использовать RedirectToAction - не среагирует
             return Json(Url.Action("Index", "PriceLists"));
         }
 
-        public JsonResult InsertPriceListAndColumns(PriceList priceList, IEnumerable<Column> columns)
+        public void InsertPriceListAndColumns(PriceList priceList, IEnumerable<Column> columns)
         {
             if (priceList == null)
             {
@@ -90,18 +115,16 @@ namespace PriceLists_Redactor.Controllers
             _db.PriceLists.Add(priceList);
             _db.SaveChanges();
 
-            if (columns!=null)
+            if (columns != null)
             {
                 foreach (Column column in columns)
                 {
                     column.PriceListId = priceList.Id;
                     _db.Columns.Add(column);
                 }
+
                 _db.SaveChanges();
             }
-
-            // т.к. ajax-post запрос то нет смысла использовать RedirectToAction - не среагирует
-            return Json(Url.Action("Index", "PriceLists"));
         }
 
         // GET: PriceLists/Edit/5
@@ -166,10 +189,15 @@ namespace PriceLists_Redactor.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
+            DeletePriceList(id);
+            return RedirectToAction("Index");
+        }
+
+        public void DeletePriceList(int id)
+        {
             PriceList priceList = _db.PriceLists.Find(id);
             _db.PriceLists.Remove(priceList);
             _db.SaveChanges();
-            return RedirectToAction("Index");
         }
 
         protected override void Dispose(bool disposing)

@@ -128,7 +128,7 @@
 
                 $.ajax({
                     type: "POST",
-                    url: "/PriceLists/UpdateItemTitle",
+                    url: "/PriceLists/UpdateItemTitleJson",
                     data: data,
                     contentType: "application/json; charset=utf-8",
                     dataType: "json"
@@ -144,7 +144,7 @@
                 var data = JSON.stringify({ itemId: itemId, cellIndex: cellIndex, data: input });
                 $.ajax({
                     type: "POST",
-                    url: "/PriceLists/UpdateCell",
+                    url: "/PriceLists/UpdateCellJson",
                     data: data,
                     contentType: "application/json; charset=utf-8",
                     dataType: "json"

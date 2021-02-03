@@ -129,7 +129,7 @@
                     var data = JSON.stringify({ priceList: priceList, columns: columns });
                     $.ajax({
                         type: "POST",
-                        url: "/PriceLists/InsertPriceListAndColumns",
+                        url: "/PriceLists/InsertPriceListAndColumnsJson",
                         data: data,
                         contentType: "application/json; charset=utf-8",
                         dataType: "json",
