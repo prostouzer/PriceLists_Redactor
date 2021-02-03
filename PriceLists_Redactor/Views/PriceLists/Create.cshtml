@@ -40,7 +40,7 @@
     </table>
     <table>
         <tr>
-            <td><button class="btn btn-md btn-primary" id="addNewColumnBtn" type="button">Новая колонка</button></td>
+            <td><button class="btn btn-primary" id="addNewColumnBtn" type="button">Новая колонка</button></td>
             <td>@Html.DropDownList("priceListWithColumns", new SelectList(ViewBag.AllPriceLists, "Id", "Name"),"Взять колонки из...", new { @class = "form-control", id = "priceListWithColumnsDropDown" })</td>
         </tr>
     </table>

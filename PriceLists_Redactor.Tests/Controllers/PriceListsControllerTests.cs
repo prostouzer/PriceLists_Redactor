@@ -33,7 +33,7 @@ namespace PriceLists_Redactor.Tests.Controllers
             _context.Items.Add(item1);
             _context.Items.Add(item2);
 
-            var newTitle = "NEW Item2 TITLE";
+            const string newTitle = "NEW Item2 TITLE";
 
             //act
             _controller.UpdateItemTitle(item2.Id, newTitle);
@@ -105,7 +105,7 @@ namespace PriceLists_Redactor.Tests.Controllers
             var cell1 = new Cell() { Id = 1, Data = "123", Item = item1, ItemId = 1 };
             _context.Cells.Add(cell1);
 
-            var newData = "321";
+            const string newData = "321";
 
             //act
             _controller.UpdateCell(item1.Id, 0, newData);

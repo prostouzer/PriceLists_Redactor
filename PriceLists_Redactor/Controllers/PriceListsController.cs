@@ -115,16 +115,14 @@ namespace PriceLists_Redactor.Controllers
             _db.PriceLists.Add(priceList);
             _db.SaveChanges();
 
-            if (columns != null)
+            if (columns == null) return;
+            foreach (var column in columns)
             {
-                foreach (var column in columns)
-                {
-                    column.PriceListId = priceList.Id;
-                    _db.Columns.Add(column);
-                }
-
-                _db.SaveChanges();
+                column.PriceListId = priceList.Id;
+                _db.Columns.Add(column);
             }
+
+            _db.SaveChanges();
         }
 
         // GET: PriceLists/Edit/5

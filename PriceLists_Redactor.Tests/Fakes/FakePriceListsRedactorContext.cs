@@ -13,10 +13,10 @@ namespace PriceLists_Redactor.Tests.Fakes
     {
         public FakePriceListsRedactorContext()
         {
-            this.PriceLists = new FakePriceListsDbSet();
-            this.Columns = new FakeColumnsDbSet();
-            this.Items = new FakeItemsDbSet();
-            this.Cells = new FakeCellsDbSet();
+            PriceLists = new FakePriceListsDbSet();
+            Columns = new FakeColumnsDbSet();
+            Items = new FakeItemsDbSet();
+            Cells = new FakeCellsDbSet();
         }
 
         public DbSet<PriceList> PriceLists { get; set; }

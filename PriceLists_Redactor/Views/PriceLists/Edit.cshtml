@@ -17,7 +17,7 @@
     @Html.HiddenFor(model => model.PriceList.Id)
 
     <div class="form-group">
-        @Html.LabelFor(model => model.PriceList.Name, "Название", htmlAttributes: new { @class = "control-label col-md-2" })
+        @Html.LabelFor(model => model.PriceList.Name, "Название", new { @class = "control-label col-md-2" })
         <div class="col-md-10">
             @Html.EditorFor(model => model.PriceList.Name, new { htmlAttributes = new { @class = "form-control" } })
             @Html.ValidationMessageFor(model => model.PriceList.Name, "", new { @class = "text-danger" })
@@ -30,7 +30,7 @@
         <thead>
         </thead>
         <tbody>
-            @for (var i = 0; i < Model.Columns.Count(); i++)
+            @for (var i = 0; i < Model.Columns.Count; i++)
             {
                 <tr>
                     @switch (Model.Columns[i].DataType)
