@@ -26,19 +26,19 @@ namespace PriceLists_Redactor.Tests.Controllers
         public void AddItemAndCells_IsOk()
         {
             //arrange
-            var expected = new ItemAndCellsViewModel()
+            var expected = new ItemAndCellsViewModel
             {
-                Item = new Item() { Id = 1, PriceListId = 1, Title = "MyItem" },
-                Cells = new List<Cell>()
+                Item = new Item { Id = 1, PriceListId = 1, Title = "MyItem" },
+                Cells = new List<Cell>
                 {
-                    new Cell(){Id=1, Data="MyData", ItemId = 1}
+                    new Cell {Id=1, Data="MyData", ItemId = 1}
                 }
             };
 
             //act
             _controller.AddItemAndCells(expected.Item, expected.Cells);
-            var actualItem = new Item() { Id = _context.Items.Single().Id, PriceListId = _context.Items.Single().PriceListId, Title = _context.Items.Single().Title };
-            var actualCell = new Cell() { Id = _context.Cells.Single().Id, Data = _context.Cells.Single().Data, ItemId = _context.Cells.Single().ItemId };
+            var actualItem = new Item { Id = _context.Items.Single().Id, PriceListId = _context.Items.Single().PriceListId, Title = _context.Items.Single().Title };
+            var actualCell = new Cell { Id = _context.Cells.Single().Id, Data = _context.Cells.Single().Data, ItemId = _context.Cells.Single().ItemId };
 
             //assert
             Assert.AreEqual(expected.Item.Id, actualItem.Id);
@@ -54,10 +54,10 @@ namespace PriceLists_Redactor.Tests.Controllers
         public void UpdateItemAndCells_IsOk()
         {
             //arrange
-            var oldItem = new Item() { Id = 1, PriceListId = 1, Title = "OldTitle" };
-            var oldCells = new List<Cell>()
+            var oldItem = new Item { Id = 1, PriceListId = 1, Title = "OldTitle" };
+            var oldCells = new List<Cell>
             {
-                new Cell(){ Id=1, Data="OldData", ItemId=1 }
+                new Cell { Id=1, Data="OldData", ItemId=1 }
             };
             _context.Items.Add(oldItem);
             foreach (var cell in oldCells)
@@ -65,16 +65,16 @@ namespace PriceLists_Redactor.Tests.Controllers
                 _context.Cells.Add(cell);
             }
 
-            var newItem = new Item() { Id = 1, PriceListId = 2, Title = "MyNewTitle" };
-            var newCells = new List<Cell>()
+            var newItem = new Item { Id = 1, PriceListId = 2, Title = "MyNewTitle" };
+            var newCells = new List<Cell>
             {
-                new Cell(){ Id=1, Data="MyNewData", ItemId=1 }
+                new Cell { Id=1, Data="MyNewData", ItemId=1 }
             };
             
             //act
             _controller.UpdateItemAndCells(newItem, newCells);
             var actualItem = _context.Items.Single();
-            var actualCells = new List<Cell>() { _context.Cells.Single() };
+            var actualCells = new List<Cell> { _context.Cells.Single() };
 
             //assert
             Assert.AreEqual(newItem.Id, actualItem.Id);
@@ -90,10 +90,10 @@ namespace PriceLists_Redactor.Tests.Controllers
         public void UpdateItemInsertCells_IsOk()
         {
             //arrange
-            var oldItem = new Item() { Id = 1, PriceListId = 1, Title = "OldTitle" };
-            var oldCells = new List<Cell>()
+            var oldItem = new Item { Id = 1, PriceListId = 1, Title = "OldTitle" };
+            var oldCells = new List<Cell>
             {
-                new Cell(){ Id=1, Data="OldData", ItemId=1 }
+                new Cell { Id=1, Data="OldData", ItemId=1 }
             };
             _context.Items.Add(oldItem);
             foreach (var cell in oldCells)
@@ -101,16 +101,16 @@ namespace PriceLists_Redactor.Tests.Controllers
                 _context.Cells.Add(cell);
             }
 
-            var newItem = new Item() { Id = 1, PriceListId = 2, Title = "MyNewTitle" };
-            var newCells = new List<Cell>()
+            var newItem = new Item { Id = 1, PriceListId = 2, Title = "MyNewTitle" };
+            var newCells = new List<Cell>
             {
-                new Cell(){ Data="MyNewData", ItemId=1 }
+                new Cell { Data="MyNewData", ItemId=1 }
             };
 
             //act
             _controller.UpdateItemInsertCells(newItem, newCells);
             var actualItem = _context.Items.Single();
-            var actualCells = new List<Cell>() { _context.Cells.Single() };
+            var actualCells = new List<Cell> { _context.Cells.Single() };
 
             //assert
             Assert.AreEqual(newItem.Id, actualItem.Id);
@@ -125,7 +125,7 @@ namespace PriceLists_Redactor.Tests.Controllers
         public void DeleteItem_IsOk()
         {
             //arrange
-            var item = new Item() { Id=1, PriceListId = 999, Title = "ItemToRemove"};
+            var item = new Item { Id=1, PriceListId = 999, Title = "ItemToRemove"};
             _context.Items.Add(item);
 
             //act
