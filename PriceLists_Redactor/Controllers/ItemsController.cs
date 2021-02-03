@@ -34,7 +34,7 @@ namespace PriceLists_Redactor.Controllers
         // GET: Items/Create
         public ActionResult Create()
         {
-            SelectList priceLists = new SelectList(_db.PriceLists, "Id", "Name");
+            var priceLists = new SelectList(_db.PriceLists, "Id", "Name");
             ViewBag.PriceLists = priceLists;
             return View();
         }
@@ -59,7 +59,7 @@ namespace PriceLists_Redactor.Controllers
             _db.Items.Add(item);
             _db.SaveChanges();
 
-            foreach (Cell cell in cells)
+            foreach (var cell in cells)
             {
                 cell.ItemId = item.Id;
                 _db.Cells.Add(cell);
@@ -75,12 +75,12 @@ namespace PriceLists_Redactor.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Item item = _db.Items.Find(id);
+            var item = _db.Items.Find(id);
             if (item == null)
             {
                 return HttpNotFound();
             }
-            ItemAndCellsViewModel itemAndCells = new ItemAndCellsViewModel
+            var itemAndCells = new ItemAndCellsViewModel
             {
                 Item = item,
                 Cells = _db.Cells.Where(c => c.ItemId == item.Id)
@@ -101,7 +101,7 @@ namespace PriceLists_Redactor.Controllers
         {
             _db.MarkAsModified(item);
 
-            foreach (Cell cell in cells)
+            foreach (var cell in cells)
             {
                 _db.MarkAsModified(cell);
             }
@@ -122,12 +122,12 @@ namespace PriceLists_Redactor.Controllers
             _db.MarkAsModified(item);
 
             var oldCells = _db.Cells.Where(c => c.ItemId == item.Id).ToList();
-            foreach (Cell cell in oldCells)
+            foreach (var cell in oldCells)
             {
                 _db.Cells.Remove(cell);
             }
 
-            foreach (Cell cell in newCells)
+            foreach (var cell in newCells)
             {
                 _db.Cells.Add(cell);
             }
@@ -142,7 +142,7 @@ namespace PriceLists_Redactor.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Item item = _db.Items.Find(id);
+            var item = _db.Items.Find(id);
             if (item == null)
             {
                 return HttpNotFound();
@@ -161,7 +161,7 @@ namespace PriceLists_Redactor.Controllers
 
         public void DeleteItem(int id)
         {
-            Item item = _db.Items.Find(id);
+            var item = _db.Items.Find(id);
             _db.Items.Remove(item);
             _db.SaveChanges();
         }

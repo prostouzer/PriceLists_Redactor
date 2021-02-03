@@ -11,7 +11,7 @@ using PriceLists_Redactor.Models.ViewModels;
 
 namespace PriceLists_Redactor.Tests.Controllers
 {
-    class PriceListsControllerTests
+    internal class PriceListsControllerTests
     {
         private IPriceListsRedactorContext _context;
         private PriceListsController _controller;
@@ -120,7 +120,7 @@ namespace PriceLists_Redactor.Tests.Controllers
             //arrange
             var priceList1 = new PriceList() { Id = 1, Name = "First priceList" };
 
-            List<Column> columns = new List<Column>()
+            var columns = new List<Column>()
             {
                 new Column() { Id = 1, DataType = DataType.Numeric, HeaderText = "MyHeaderText1", PriceListId = priceList1.Id},
                 new Column() { Id = 2, DataType = DataType.Bool, HeaderText = "MyHeaderText2", PriceListId = priceList1.Id}
@@ -129,7 +129,7 @@ namespace PriceLists_Redactor.Tests.Controllers
             //act
             _controller.InsertPriceListAndColumns(priceList1, columns);
             var actualPriceList = _context.PriceLists.Single();
-            List<Column> actualColumns = _context.Columns.Where(c => c.PriceListId == priceList1.Id).ToList();
+            var actualColumns = _context.Columns.Where(c => c.PriceListId == priceList1.Id).ToList();
 
             //assert
             Assert.AreEqual(priceList1, actualPriceList);

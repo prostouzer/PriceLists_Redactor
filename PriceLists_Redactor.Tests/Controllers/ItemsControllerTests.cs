@@ -9,7 +9,7 @@ using PriceLists_Redactor.Tests.Fakes;
 
 namespace PriceLists_Redactor.Tests.Controllers
 {
-    class ItemsControllerTests
+    internal class ItemsControllerTests
     {
         private IPriceListsRedactorContext _context;
         private ItemsController _controller;
@@ -55,18 +55,18 @@ namespace PriceLists_Redactor.Tests.Controllers
         {
             //arrange
             var oldItem = new Item() { Id = 1, PriceListId = 1, Title = "OldTitle" };
-            List<Cell> oldCells = new List<Cell>()
+            var oldCells = new List<Cell>()
             {
                 new Cell(){ Id=1, Data="OldData", ItemId=1 }
             };
             _context.Items.Add(oldItem);
-            foreach (Cell cell in oldCells)
+            foreach (var cell in oldCells)
             {
                 _context.Cells.Add(cell);
             }
 
             var newItem = new Item() { Id = 1, PriceListId = 2, Title = "MyNewTitle" };
-            List<Cell> newCells = new List<Cell>()
+            var newCells = new List<Cell>()
             {
                 new Cell(){ Id=1, Data="MyNewData", ItemId=1 }
             };
@@ -91,18 +91,18 @@ namespace PriceLists_Redactor.Tests.Controllers
         {
             //arrange
             var oldItem = new Item() { Id = 1, PriceListId = 1, Title = "OldTitle" };
-            List<Cell> oldCells = new List<Cell>()
+            var oldCells = new List<Cell>()
             {
                 new Cell(){ Id=1, Data="OldData", ItemId=1 }
             };
             _context.Items.Add(oldItem);
-            foreach (Cell cell in oldCells)
+            foreach (var cell in oldCells)
             {
                 _context.Cells.Add(cell);
             }
 
             var newItem = new Item() { Id = 1, PriceListId = 2, Title = "MyNewTitle" };
-            List<Cell> newCells = new List<Cell>()
+            var newCells = new List<Cell>()
             {
                 new Cell(){ Data="MyNewData", ItemId=1 }
             };

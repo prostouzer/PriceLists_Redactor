@@ -37,7 +37,7 @@ namespace PriceLists_Redactor.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            PriceList priceList = _db.PriceLists.Find(id);
+            var priceList = _db.PriceLists.Find(id);
             var priceListWithItems = GetPriceListAndItemsViewModelFromPriceList(priceList);
             if (priceList == null)
             {
@@ -48,11 +48,11 @@ namespace PriceLists_Redactor.Controllers
 
         public PriceListAndItemsViewModel GetPriceListAndItemsViewModelFromPriceList(PriceList priceList)
         {
-            List<Column> columns = _db.Columns.Where(c => c.PriceListId == priceList.Id).ToList();
+            var columns = _db.Columns.Where(c => c.PriceListId == priceList.Id).ToList();
             IEnumerable<Item> items = _db.Items.Where(i => i.PriceListId == priceList.Id);
             IEnumerable<Cell> cells = _db.Cells.Where(c => c.Item.PriceListId == priceList.Id);
 
-            PriceListAndItemsViewModel priceListWithItems = new PriceListAndItemsViewModel(priceList, columns, items, cells);
+            var priceListWithItems = new PriceListAndItemsViewModel(priceList, columns, items, cells);
             return priceListWithItems;
         }
 
@@ -117,7 +117,7 @@ namespace PriceLists_Redactor.Controllers
 
             if (columns != null)
             {
-                foreach (Column column in columns)
+                foreach (var column in columns)
                 {
                     column.PriceListId = priceList.Id;
                     _db.Columns.Add(column);
@@ -134,15 +134,15 @@ namespace PriceLists_Redactor.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            PriceList priceList = _db.PriceLists.Find(id);
+            var priceList = _db.PriceLists.Find(id);
 
             if (priceList == null)
             {
                 return HttpNotFound();
             }
 
-            List<Column> columns = _db.Columns.Where(c => c.PriceListId == priceList.Id).ToList();
-            PriceListAndColumnsViewModel priceListAndColumns = new PriceListAndColumnsViewModel(priceList) { Columns = columns };
+            var columns = _db.Columns.Where(c => c.PriceListId == priceList.Id).ToList();
+            var priceListAndColumns = new PriceListAndColumnsViewModel(priceList) { Columns = columns };
 
             return View(priceListAndColumns);
         }
@@ -157,7 +157,7 @@ namespace PriceLists_Redactor.Controllers
                 var priceList = priceListAndColumns.PriceList;
                 _db.MarkAsModified(priceList);
                 var columns = priceListAndColumns.Columns;
-                foreach (Column column in columns)
+                foreach (var column in columns)
                 {
                     _db.MarkAsModified(column);
                 }
@@ -176,7 +176,7 @@ namespace PriceLists_Redactor.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            PriceList priceList = _db.PriceLists.Find(id);
+            var priceList = _db.PriceLists.Find(id);
             if (priceList == null)
             {
                 return HttpNotFound();
@@ -195,7 +195,7 @@ namespace PriceLists_Redactor.Controllers
 
         public void DeletePriceList(int id)
         {
-            PriceList priceList = _db.PriceLists.Find(id);
+            var priceList = _db.PriceLists.Find(id);
             _db.PriceLists.Remove(priceList);
             _db.SaveChanges();
         }

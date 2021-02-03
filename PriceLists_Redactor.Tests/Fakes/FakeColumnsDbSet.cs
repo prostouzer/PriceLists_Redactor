@@ -3,7 +3,7 @@ using PriceLists_Redactor.Models;
 
 namespace PriceLists_Redactor.Tests.Fakes
 {
-    class FakeColumnsDbSet : FakeDbSet<Column>
+    internal class FakeColumnsDbSet : FakeDbSet<Column>
     {
         public override Column Find(params object[] keyValues)
         {

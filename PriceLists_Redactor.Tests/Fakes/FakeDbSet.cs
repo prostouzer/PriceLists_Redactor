@@ -11,8 +11,8 @@ namespace PriceLists_Redactor.Tests.Fakes
     public class FakeDbSet<T> : DbSet<T>, IQueryable, IEnumerable<T>
         where T : class
     {
-        readonly ObservableCollection<T> _data;
-        readonly IQueryable _query;
+        private readonly ObservableCollection<T> _data;
+        private readonly IQueryable _query;
 
         public FakeDbSet()
         {
@@ -48,25 +48,13 @@ namespace PriceLists_Redactor.Tests.Fakes
             return Activator.CreateInstance<TDerivedEntity>();
         }
 
-        public override ObservableCollection<T> Local
-        {
-            get { return new ObservableCollection<T>(_data); }
-        }
+        public override ObservableCollection<T> Local => new ObservableCollection<T>(_data);
 
-        Type IQueryable.ElementType
-        {
-            get { return _query.ElementType; }
-        }
+        Type IQueryable.ElementType => _query.ElementType;
 
-        System.Linq.Expressions.Expression IQueryable.Expression
-        {
-            get { return _query.Expression; }
-        }
+        System.Linq.Expressions.Expression IQueryable.Expression => _query.Expression;
 
-        IQueryProvider IQueryable.Provider
-        {
-            get { return _query.Provider; }
-        }
+        IQueryProvider IQueryable.Provider => _query.Provider;
 
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {

@@ -3,7 +3,7 @@ using PriceLists_Redactor.Models;
 
 namespace PriceLists_Redactor.Tests.Fakes
 {
-    class FakeItemsDbSet : FakeDbSet<Item>
+    internal class FakeItemsDbSet : FakeDbSet<Item>
     {
         public override Item Find(params object[] keyValues)
         {

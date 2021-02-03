@@ -9,7 +9,7 @@ using PriceLists_Redactor.Models;
 
 namespace PriceLists_Redactor.Tests.Fakes
 {
-    class FakePriceListsRedactorContext : IPriceListsRedactorContext
+    internal class FakePriceListsRedactorContext : IPriceListsRedactorContext
     {
         public FakePriceListsRedactorContext()
         {
