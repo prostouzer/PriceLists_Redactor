@@ -25,19 +25,19 @@ namespace PriceLists_Redactor.Controllers
         }
 
         // GET: PriceLists
-        public async Task<ActionResult> Index()
+        public ActionResult Index()
         {
-            return View(await _db.PriceLists.ToListAsync());
+            return View(_db.PriceLists.ToList());
         }
 
         // GET: PriceLists/Details/5
-        public async Task<ActionResult> Details(int? id)
+        public ActionResult Details(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            PriceList priceList = await _db.PriceLists.FindAsync(id);
+            PriceList priceList = _db.PriceLists.Find(id);
             List<Column> columns = _db.Columns.Where(c => c.PriceListId == id).ToList();
             IEnumerable<Item> items = _db.Items.Where(i => i.PriceListId == id);
             IEnumerable<Cell> cells = _db.Cells.Where(c => c.Item.PriceListId == id);
@@ -53,8 +53,7 @@ namespace PriceLists_Redactor.Controllers
         // GET: PriceLists/Create
         public ActionResult Create()
         {
-            // предлагаем юзеру добавить уже имеющиеся наборы колонок в новый прайс лист
-            //SelectList allPriceLists = new SelectList(db.PriceLists.ToList(), "Id", "Name"); ViewBag.AllPriceLists = allPriceLists;
+            // предлагаем юзеру взять уже имеющиеся наборы колонок в новый прайс лист
             var allPriceLists = _db.PriceLists.ToList();
             ViewBag.AllPriceLists = allPriceLists;
             return View(new PriceListAndColumnsViewModel(new PriceList()));
@@ -106,13 +105,13 @@ namespace PriceLists_Redactor.Controllers
         }
 
         // GET: PriceLists/Edit/5
-        public async Task<ActionResult> Edit(int? id)
+        public ActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            PriceList priceList = await _db.PriceLists.FindAsync(id);
+            PriceList priceList = _db.PriceLists.Find(id);
 
             if (priceList == null)
             {
@@ -128,7 +127,7 @@ namespace PriceLists_Redactor.Controllers
         // POST: PriceLists/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit(PriceListAndColumnsViewModel priceListAndColumns)
+        public ActionResult Edit(PriceListAndColumnsViewModel priceListAndColumns)
         {
             if (ModelState.IsValid)
             {
@@ -139,7 +138,7 @@ namespace PriceLists_Redactor.Controllers
                 {
                     _db.MarkAsModified(column);
                 }
-                await _db.SaveChangesAsync();
+                _db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
@@ -148,13 +147,13 @@ namespace PriceLists_Redactor.Controllers
         }
 
         // GET: PriceLists/Delete/5
-        public async Task<ActionResult> Delete(int? id)
+        public ActionResult Delete(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            PriceList priceList = await _db.PriceLists.FindAsync(id);
+            PriceList priceList = _db.PriceLists.Find(id);
             if (priceList == null)
             {
                 return HttpNotFound();
@@ -165,11 +164,11 @@ namespace PriceLists_Redactor.Controllers
         // POST: PriceLists/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> DeleteConfirmed(int id)
+        public ActionResult DeleteConfirmed(int id)
         {
-            PriceList priceList = await _db.PriceLists.FindAsync(id);
+            PriceList priceList = _db.PriceLists.Find(id);
             _db.PriceLists.Remove(priceList);
-            await _db.SaveChangesAsync();
+            _db.SaveChanges();
             return RedirectToAction("Index");
         }
 

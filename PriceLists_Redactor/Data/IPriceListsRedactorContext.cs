@@ -15,7 +15,6 @@ namespace PriceLists_Redactor.Data
         void MarkAsModified(Cell cell);
 
         int SaveChanges();
-        System.Threading.Tasks.Task<int> SaveChangesAsync();
         void Dispose();
     }
 }

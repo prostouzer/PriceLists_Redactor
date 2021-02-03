@@ -25,10 +25,10 @@ namespace PriceLists_Redactor.Controllers
         }
 
         // GET: Items
-        public async Task<ActionResult> Index()
+        public ActionResult Index()
         {
             var items = _db.Items.Include(i => i.PriceList);
-            return View(await items.ToListAsync());
+            return View(items.ToList());
         }
 
         // GET: Items/Create
@@ -49,20 +49,20 @@ namespace PriceLists_Redactor.Controllers
         // POST: Items/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create(ItemAndCellsViewModel itemAndCells)
+        public ActionResult Create(ItemAndCellsViewModel itemAndCells)
         {
             if (ModelState.IsValid)
             {
                 var item = itemAndCells.Item;
                 _db.Items.Add(item);
-                await _db.SaveChangesAsync();
+                _db.SaveChanges();
 
                 foreach (var cell in itemAndCells.Cells)
                 {
                     cell.ItemId = item.Id;
                     _db.Cells.Add(cell);
                 }
-                await _db.SaveChangesAsync();
+                _db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
@@ -88,13 +88,13 @@ namespace PriceLists_Redactor.Controllers
         }
 
         // GET: Items/Edit/5
-        public async Task<ActionResult> Edit(int? id)
+        public ActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Item item = await _db.Items.FindAsync(id);
+            Item item = _db.Items.Find(id);
             if (item == null)
             {
                 return HttpNotFound();
@@ -111,7 +111,7 @@ namespace PriceLists_Redactor.Controllers
         // POST: Items/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit(ItemAndCellsViewModel itemAndCells)
+        public ActionResult Edit(ItemAndCellsViewModel itemAndCells)
         {
             if (ModelState.IsValid)
             {
@@ -122,7 +122,7 @@ namespace PriceLists_Redactor.Controllers
                 {
                     _db.MarkAsModified(cell);
                 }
-                await _db.SaveChangesAsync();
+                _db.SaveChanges();
                 return RedirectToAction("Index");
             }
             ViewBag.PriceListId = new SelectList(_db.PriceLists, "Id", "Name", itemAndCells.Item.PriceListId);
@@ -165,13 +165,13 @@ namespace PriceLists_Redactor.Controllers
         }
 
         // GET: Items/Delete/5
-        public async Task<ActionResult> Delete(int? id)
+        public ActionResult Delete(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Item item = await _db.Items.FindAsync(id);
+            Item item = _db.Items.Find(id);
             if (item == null)
             {
                 return HttpNotFound();
@@ -182,11 +182,11 @@ namespace PriceLists_Redactor.Controllers
         // POST: Items/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> DeleteConfirmed(int id)
+        public ActionResult DeleteConfirmed(int id)
         {
-            Item item = await _db.Items.FindAsync(id);
+            Item item = _db.Items.Find(id);
             _db.Items.Remove(item);
-            await _db.SaveChangesAsync();
+            _db.SaveChanges();
             return RedirectToAction("Index");
         }
 
